@@ -176,13 +176,6 @@
             color: var(--burgundy);
         }
 
-        .product-info p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 15px;
-            flex: 1;
-        }
-
         .options-group {
             margin-bottom: 15px;
         }
@@ -320,6 +313,30 @@
             border-bottom: 1px solid var(--beige-light);
         }
 
+        /* صندوق معلومات الزبون الجديد */
+        .user-info-box {
+            padding: 15px;
+            background-color: #fcfbfa;
+            border: 1px dashed var(--burgundy);
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .user-info-box h4 {
+            color: var(--burgundy);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .user-info-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--beige-dark);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
         /* خيارات الدفع في السلة */
         .payment-methods-box {
             padding: 15px;
@@ -381,7 +398,6 @@
                 <img src="mango.jpg" alt="ترافل مانجو" class="product-img">
                 <div class="product-info">
                     <h3>ترافل مانجو</h3>
-
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
@@ -401,7 +417,6 @@
                 <img src="trameso.jpg" alt="ترايمسو" class="product-img">
                 <div class="product-info">
                     <h3>ترايمسو</h3>
-
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
@@ -421,7 +436,6 @@
                 <img src="thecscake.jpg" alt="تشيزكيك البقلاوة" class="product-img">
                 <div class="product-info">
                     <h3>تشيزكيك البقلاوة</h3>
-
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
@@ -473,7 +487,7 @@
     <div class="overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
     <div class="cart-drawer" id="cartDrawer">
         <div class="cart-header">
-            <h3>سلة التسوق الخاص بك</h3>
+            <h3>سلة التسوق الخاصة بك</h3>
             <button style="background:none; border:none; color:white; font-size:24px; cursor:pointer;" onclick="toggleCart(false)">&times;</button>
         </div>
         <div class="cart-items" id="cartItemsList">
@@ -481,15 +495,21 @@
         </div>
         
         <div class="cart-footer">
+            <div class="user-info-box">
+                <h4>📝 بيانات العميل (مطلوب للتوصيل):</h4>
+                <input type="text" id="custName" placeholder="اسم العميل الكامل" required>
+                <input type="tel" id="custPhone" placeholder="رقم الهاتف (واتساب)" required>
+            </div>
+
             <div class="payment-methods-box">
                 <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">اختر طريقة الدفع:</span>
                 <label class="payment-option">
-                    <input type="radio" name="payMethod" value="cod" checked>
+                    <input type="radio" name="payMethod" value="الدفع عند الاستلام (COD)" checked>
                     <span>💵 الدفع عند الاستلام (COD)</span>
                 </label>
                 <label class="payment-option">
-                    <input type="radio" name="payMethod" value="online">
-                    <span>💳 دفع إلكتروني (مدى / Apple Pay / فيزا)</span>
+                    <input type="radio" name="payMethod" value="دفع إلكتروني (بوابة الدفع)">
+                    <span>💳 دفع إلكتروني (مدى / Apple Pay)</span>
                 </label>
             </div>
 
@@ -521,7 +541,7 @@
             const sizeBtns = card.querySelectorAll('.size-selector .option-btn');
             
             sizeBtns.forEach(btn => {
-                if (btn.onclick.toString().includes(`'${size}'`)) {
+                if (btn.innerText === size) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
@@ -538,7 +558,15 @@
 
         function addToCart(name, key) {
             let details = `طبق حجم (${state[key].size})`;
-            cart.push({ name: name, details: details, price: state[key].price });
+            
+            // ميزة تجميع العناصر المتشابهة وحساب العدد تلقائياً
+            let existingItem = cart.find(item => item.name === name && item.details === details);
+            if(existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name: name, details: details, price: state[key].price, qty: 1 });
+            }
+            
             updateCartUI();
             toggleCart(true);
         }
@@ -549,7 +577,7 @@
             const staff = document.getElementById('cat-staff').checked ? "مع عامله" : "بدون عامله";
             let price = document.getElementById('cat-staff').checked ? 40 : 30;
             
-            cart.push({ name: 'حجز عربة مناسبات', details: `التاريخ: ${date} | صنف: ${sweet} | ${staff}`, price: price });
+            cart.push({ name: 'حجز عربة مناسبات', details: `التاريخ: ${date} | صنف: ${sweet} | ${staff}`, price: price, qty: 1 });
             updateCartUI();
             toggleCart(true);
         }
@@ -560,7 +588,7 @@
         }
 
         function updateCartUI() {
-            document.getElementById('cartCount').textContent = cart.length;
+            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
             const list = document.getElementById('cartItemsList');
             if(cart.length === 0) {
                 list.innerHTML = `<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>`;
@@ -569,9 +597,9 @@
             }
             let html = ""; let total = 0;
             cart.forEach((item, index) => {
-                total += item.price;
+                total += (item.price * item.qty);
                 html += `<div class="cart-item">
-                    <div><h4>${item.name}</h4><small>${item.details}</small><br><strong>${item.price} ر.ع</strong></div>
+                    <div><h4>${item.name} (${item.qty} حبة)</h4><small>${item.details}</small><br><strong>${item.price * item.qty} ر.ع</strong></div>
                     <button style="color:red; background:none; border:none; cursor:pointer;" onclick="cart.splice(${index},1); updateCartUI();">حذف</button>
                 </div>`;
             });
@@ -584,18 +612,50 @@
                 alert('سلتك فارغة! أضف بعض الحلويات أولاً.');
                 return;
             }
+
+            // التحقق من إدخال اسم ورقم الزبون
+            const clientName = document.getElementById('custName').value.trim();
+            const clientPhone = document.getElementById('custPhone').value.trim();
+
+            if (!clientName || !clientPhone) {
+                alert('فضلاً، قم بكتابة اسمك ورقم هاتفك لتأكيد التوصيل والطلب.');
+                return;
+            }
             
             const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
+            let totalSum = document.getElementById('cartTotalSum').textContent;
+            let totalItemsCount = cart.reduce((sum, item) => sum + item.qty, 0);
             
-            if (selectedMethod === 'cod') {
-                alert('تمت العملية بنجاح! خيارك هو: الدفع عند الاستلام. سيتم التواصل معك لتأكيد موعد التوصيل وعنوانك.');
-                cart = [];
-                updateCartUI();
-                toggleCart(false);
-            } else {
-                alert('جاري الانتقال الآمن إلى بوابة الدفع الإلكتروني الموثقة لتسديد المبلغ عبر مدى أو Apple Pay...');
-            }
+            // إنشاء الفاتورة الشاملة للاسم والرقم والعدد للواتساب
+            let message = `*فاتورة طلب جديد من متجر VEL SWEETS* 🧁✨\n\n`;
+            message += `👤 *اسم العميل:* ${clientName}\n`;
+            message += `📞 *رقم العميل:* ${clientPhone}\n`;
+            message += `📊 *إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
+            message += `----------------------------------\n`;
+            message += `📦 *تفاصيل الأصناف والعدد:*\n`;
+            
+            cart.forEach((item, index) => {
+                message += `${index + 1}. [العدد: ${item.qty}] - ${item.name} - ${item.details} (${item.price * item.qty} ر.ع)\n`;
+            });
+            
+            message += `----------------------------------\n`;
+            message += `💰 *المجموع الكلي الفاخر:* ${totalSum}\n`;
+            message += `💳 *طريقة السداد:* ${selectedMethod}\n\n`;
+            message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للتوصيل الفوري.`;
+            
+            // رابط التوجيه المباشر إلى رقم واتساب صاحب المشروع (ضع رقمك مكان الـ XXXXXXXX)
+            let whatsappUrl = `https://api.whatsapp.com/send?phone=96872557922&text=${encodeURIComponent(message)}`;
+            
+            alert('شكراً لطلبك! سيتم الآن فتح الواتساب تلقائياً لإرسال الفاتورة الرسمية التي تحمل اسمك وتفاصيل طلبك إلى إدارة المتجر.');
+            window.open(whatsappUrl, '_blank');
+            
+            // إعادة ضبط السلة والبيانات بعد الإرسال
+            cart = [];
+            document.getElementById('custName').value = "";
+            document.getElementById('custPhone').value = "";
+            updateCartUI();
+            toggleCart(false);
         }
     </script>
 </body>
-</html> 
+</html>
