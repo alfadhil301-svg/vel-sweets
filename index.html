@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر VEL للحلويات الفاخرة</title>
+    <style>
+        :root {
+            --burgundy: #5c0612;
+            --burgundy-hover: #3d050b;
+            --beige-dark: #ebd7c5;
+            --beige-light: #f5f2eb;
+            --text-dark: #3d0c11;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--beige-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* القائمة العلوية والتنقل */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--burgundy);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--burgundy);
+        }
+
+        .cart-icon-btn {
+            background: none;
+            border: none;
+            position: relative;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--burgundy);
+            background-color: var(--beige-dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background-color: var(--burgundy);
+            color: var(--white);
+            font-size: 11px;
+            padding: 2px 7px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        /* واجهة العرض الرئيسية */
+        .hero {
+            background-color: var(--beige-dark);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            color: var(--burgundy);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        /* الشبكة العامة للمنتجات */
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            color: var(--burgundy);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background-color: var(--burgundy);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-info h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--burgundy);
+        }
+
+        .product-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .options-group {
+            margin-bottom: 15px;
+        }
+
+        .options-label {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .size-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border: 1px solid var(--beige-dark);
+            background: var(--white);
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .option-btn.active {
+            background-color: var(--burgundy);
+            color: var(--white);
+            border-color: var(--burgundy);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--beige-light);
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--burgundy);
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* قسم عربة الحفلات */
+        .catering-section {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border-right: 5px solid var(--burgundy);
+            margin-bottom: 60px;
+        }
+
+        .catering-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid var(--beige-dark);
+            border-radius: 4px;
+            background-color: var(--beige-light);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--beige-light);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        /* سلة المشتريات الجانبية */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100%;
+            background-color: var(--white);
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-drawer.open { left: 0; }
+
+        .cart-header {
+            padding: 20px;
+            background-color: var(--burgundy);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--beige-light);
+        }
+
+        /* خيارات الدفع في السلة */
+        .payment-methods-box {
+            padding: 15px;
+            background-color: var(--white);
+            border: 1px solid var(--beige-dark);
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .cart-footer { padding: 20px; background-color: var(--beige-light); border-top: 1px solid var(--beige-dark); }
+
+        .checkout-btn {
+            width: 100%; background-color: var(--burgundy); color: var(--white);
+            border: none; padding: 12px; font-weight: bold; border-radius: 4px; cursor: pointer;
+        }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); z-index: 1500; display: none;
+        }
+
+        .overlay.show { display: block; }
+
+        footer { background-color: var(--text-dark); color: var(--beige-light); text-align: center; padding: 20px; margin-top: 40px;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo-area">
+                <img src="logo.jpeg" alt="VEL Logo" class="logo-img">
+                <span class="logo-text">VEL SWEETS</span>
+            </div>
+            <button class="cart-icon-btn" onclick="toggleCart(true)">
+                🛒 السلة (<span id="cartCount">0</span>)
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1> VEL </h1>
+        <p>نصنع الحلويات الفاخرة بحب وعناية لتناسب أرقى مناسباتكم.</p>
+    </section>
+
+    <main>
+        <h2 class="section-title">قائمة الحلويات الفاخرة</h2>
+        <div class="products-grid">
+            
+            <div class="product-card" id="prod-mango">
+                <img src="mango.jpg" alt="ترافل مانجو" class="product-img">
+                <div class="product-info">
+                    <h3>ترافل مانجو</h3>
+
+                    <div class="options-group">
+                        <span class="options-label">اختر حجم الطبق:</span>
+                        <div class="size-selector">
+                            <button class="option-btn active" onclick="selectSize('mango', 'صغير', 3)">صغير</button>
+                            <button class="option-btn" onclick="selectSize('mango', 'وسط', 6)">وسط</button>
+                            <button class="option-btn" onclick="selectSize('mango', 'كبير', 9)">كبير</button>
+                        </div>
+                    </div>
+                    <div class="price-row">
+                        <span class="product-price" id="mango-price">3 ر.ع</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('ترافل مانجو', 'mango')">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" id="prod-tiramisu">
+                <img src="trameso.jpg" alt="ترايمسو" class="product-img">
+                <div class="product-info">
+                    <h3>ترايمسو</h3>
+
+                    <div class="options-group">
+                        <span class="options-label">اختر حجم الطبق:</span>
+                        <div class="size-selector">
+                            <button class="option-btn active" onclick="selectSize('tiramisu', 'صغير', 3)">صغير</button>
+                            <button class="option-btn" onclick="selectSize('tiramisu', 'وسط', 6)">وسط</button>
+                            <button class="option-btn" onclick="selectSize('tiramisu', 'كبير', 9)">كبير</button>
+                        </div>
+                    </div>
+                    <div class="price-row">
+                        <span class="product-price" id="tiramisu-price">3 ر.ع</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('ترايمسو', 'tiramisu')">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card" id="prod-baklava">
+                <img src="thecscake.jpg" alt="تشيزكيك البقلاوة" class="product-img">
+                <div class="product-info">
+                    <h3>تشيزكيك البقلاوة</h3>
+
+                    <div class="options-group">
+                        <span class="options-label">اختر حجم الطبق:</span>
+                        <div class="size-selector">
+                            <button class="option-btn active" onclick="selectSize('baklava', 'صغير', 3)">صغير</button>
+                            <button class="option-btn" onclick="selectSize('baklava', 'وسط', 6)">وسط</button>
+                            <button class="option-btn" onclick="selectSize('baklava', 'كبير', 9)">كبير</button>
+                        </div>
+                    </div>
+                    <div class="price-row">
+                        <span class="product-price" id="baklava-price">3 ر.ع</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('تشيزكيك البقلاوة', 'baklava')">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <section class="catering-section">
+            <h2 style="color: var(--burgundy); margin-bottom: 10px;">حجز عربة التقديم للحفلات والمناسبات</h2>
+            <p>أضف لمسة ضيافة راقية لمناسبتك بعربة مجهزة بالكامل متناسقة مع ألوان الهوية الفاخرة.</p>
+            <form class="catering-form" onsubmit="event.preventDefault(); addCateringToCart();">
+                <div class="form-group">
+                    <label>تاريخ الحفل والمناسبة:</label>
+                    <input type="date" id="cat-date" required>
+                </div>
+                <div class="form-group">
+                    <label>نوع السويت المفضل للعربة:</label>
+                    <select id="cat-sweet-type">
+                        <option value="ترافل مانجو">ترافل مانجو</option>
+                        <option value="ترايمسو">ترايمسو</option>
+                        <option value="تشيزكيك البقلاوة">تشيزكيك البقلاوة</option>
+                        <option value="تشكيلة كاملة">تشكيلة من الثلاث أنواع</option>
+                    </select>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <div class="toggle-container">
+                        <input type="checkbox" id="cat-staff" style="width: 20px; height: 20px;" onchange="updateCateringPrice()">
+                        <label for="cat-staff" style="font-weight: bold; cursor: pointer;">طلب الخدمة مع عاملة ضيافة محترفة (+10 ر.ع)</label>
+                    </div>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <div>السعر الكلي للعربة: <span id="cat-total-price" style="font-size: 22px; font-weight: bold; color: var(--burgundy);">30 ر.ع</span></div>
+                    <button type="submit" class="add-to-cart-btn">احجز العربة الآن</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <div class="overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>سلة التسوق الخاص بك</h3>
+            <button style="background:none; border:none; color:white; font-size:24px; cursor:pointer;" onclick="toggleCart(false)">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsList">
+            <p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>
+        </div>
+        
+        <div class="cart-footer">
+            <div class="payment-methods-box">
+                <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">اختر طريقة الدفع:</span>
+                <label class="payment-option">
+                    <input type="radio" name="payMethod" value="cod" checked>
+                    <span>💵 الدفع عند الاستلام (COD)</span>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="payMethod" value="online">
+                    <span>💳 دفع إلكتروني (مدى / Apple Pay / فيزا)</span>
+                </label>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px; font-size: 18px;">
+                <span>المجموع:</span>
+                <span id="cartTotalSum">0 ر.ع</span>
+            </div>
+            <button class="checkout-btn" onclick="processCheckout()">تأكيد وإتمام الطلب</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة لمتجر VEL الفاخر للحلويات والمناسبات &copy; 2026</p>
+    </footer>
+
+    <script>
+        let cart = [];
+        let state = {
+            mango: { size: 'صغير', price: 3 },
+            tiramisu: { size: 'صغير', price: 3 },
+            baklava: { size: 'صغير', price: 3 }
+        };
+
+        function selectSize(prod, size, price) {
+            state[prod].size = size;
+            state[prod].price = price;
+            
+            const card = document.getElementById(`prod-${prod}`);
+            const sizeBtns = card.querySelectorAll('.size-selector .option-btn');
+            
+            sizeBtns.forEach(btn => {
+                if (btn.onclick.toString().includes(`'${size}'`)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
+        }
+
+        function updateCateringPrice() {
+            let total = document.getElementById('cat-staff').checked ? 40 : 30;
+            document.getElementById('cat-total-price').textContent = `${total} ر.ع`;
+        }
+
+        function addToCart(name, key) {
+            let details = `طبق حجم (${state[key].size})`;
+            cart.push({ name: name, details: details, price: state[key].price });
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function addCateringToCart() {
+            const date = document.getElementById('cat-date').value;
+            const sweet = document.getElementById('cat-sweet-type').value;
+            const staff = document.getElementById('cat-staff').checked ? "مع عامله" : "بدون عامله";
+            let price = document.getElementById('cat-staff').checked ? 40 : 30;
+            
+            cart.push({ name: 'حجز عربة مناسبات', details: `التاريخ: ${date} | صنف: ${sweet} | ${staff}`, price: price });
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function toggleCart(open) {
+            document.getElementById('cartDrawer').classList.toggle('open', open);
+            document.getElementById('cartOverlay').classList.toggle('show', open);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').textContent = cart.length;
+            const list = document.getElementById('cartItemsList');
+            if(cart.length === 0) {
+                list.innerHTML = `<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>`;
+                document.getElementById('cartTotalSum').textContent = "0 ر.ع";
+                return;
+            }
+            let html = ""; let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `<div class="cart-item">
+                    <div><h4>${item.name}</h4><small>${item.details}</small><br><strong>${item.price} ر.ع</strong></div>
+                    <button style="color:red; background:none; border:none; cursor:pointer;" onclick="cart.splice(${index},1); updateCartUI();">حذف</button>
+                </div>`;
+            });
+            list.innerHTML = html;
+            document.getElementById('cartTotalSum').textContent = `${total} ر.ع`;
+        }
+
+        function processCheckout() {
+            if (cart.length === 0) {
+                alert('سلتك فارغة! أضف بعض الحلويات أولاً.');
+                return;
+            }
+            
+            const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
+            
+            if (selectedMethod === 'cod') {
+                alert('تمت العملية بنجاح! خيارك هو: الدفع عند الاستلام. سيتم التواصل معك لتأكيد موعد التوصيل وعنوانك.');
+                cart = [];
+                updateCartUI();
+                toggleCart(false);
+            } else {
+                alert('جاري الانتقال الآمن إلى بوابة الدفع الإلكتروني الموثقة لتسديد المبلغ عبر مدى أو Apple Pay...');
+            }
+        }
+    </script>
+</body>
+</html> 
