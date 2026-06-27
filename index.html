@@ -139,7 +139,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
         .product-card {
@@ -237,34 +237,39 @@
             font-weight: bold;
         }
 
-        /* قسم عربة الحفلات */
-        .catering-section {
+        /* قسم بوكس صنفين المجمع وقسم عربة الحفلات */
+        .custom-section {
             background-color: var(--white);
-            padding: 40px;
+            padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
             border-right: 5px solid var(--burgundy);
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
 
-        .catering-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .form-group {
+        .checkbox-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
+            background: var(--beige-light);
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid var(--beige-dark);
+            margin-top: 10px;
         }
 
-        .form-group input, .form-group select {
-            padding: 10px;
-            border: 1px solid var(--beige-dark);
-            border-radius: 4px;
-            background-color: var(--beige-light);
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
 
         .toggle-container {
@@ -274,6 +279,8 @@
             background: var(--beige-light);
             padding: 15px;
             border-radius: 4px;
+            border: 1px dashed var(--burgundy);
+            margin-top: 15px;
         }
 
         /* سلة المشتريات الجانبية */
@@ -313,7 +320,7 @@
             border-bottom: 1px solid var(--beige-light);
         }
 
-        /* صندوق معلومات الزبون الجديد */
+        /* صندوق معلومات العميل */
         .user-info-box {
             padding: 15px;
             background-color: #fcfbfa;
@@ -380,7 +387,7 @@
                 <span class="logo-text">VEL SWEETS</span>
             </div>
             <button class="cart-icon-btn" onclick="toggleCart(true)">
-                🛒 السلة (<span id="cartCount">0</span>)
+                السلة (<span id="cartCount">0</span>)
             </button>
         </div>
     </header>
@@ -401,51 +408,51 @@
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
-                            <button class="option-btn active" onclick="selectSize('mango', 'صغير', 3)">صغير</button>
+                            <button class="option-btn active" onclick="selectSize('mango', 'صغير', 4)">صغير</button>
                             <button class="option-btn" onclick="selectSize('mango', 'وسط', 6)">وسط</button>
-                            <button class="option-btn" onclick="selectSize('mango', 'كبير', 9)">كبير</button>
+                            <button class="option-btn" onclick="selectSize('mango', 'كبير', 12)">كبير</button>
                         </div>
                     </div>
                     <div class="price-row">
-                        <span class="product-price" id="mango-price">3 ر.ع</span>
+                        <span class="product-price" id="mango-price">4 ر.ع</span>
                         <button class="add-to-cart-btn" onclick="addToCart('ترافل مانجو', 'mango')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
 
             <div class="product-card" id="prod-tiramisu">
-                <img src="trameso.jpg" alt="ترايمسو" class="product-img">
+                <img src="trameso.jpg" alt="تيرامسو" class="product-img">
                 <div class="product-info">
-                    <h3>ترايمسو</h3>
+                    <h3>تيرامسو</h3>
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
-                            <button class="option-btn active" onclick="selectSize('tiramisu', 'صغير', 3)">صغير</button>
+                            <button class="option-btn active" onclick="selectSize('tiramisu', 'صغير', 4)">صغير</button>
                             <button class="option-btn" onclick="selectSize('tiramisu', 'وسط', 6)">وسط</button>
-                            <button class="option-btn" onclick="selectSize('tiramisu', 'كبير', 9)">كبير</button>
+                            <button class="option-btn" onclick="selectSize('tiramisu', 'كبير', 12)">كبير</button>
                         </div>
                     </div>
                     <div class="price-row">
-                        <span class="product-price" id="tiramisu-price">3 ر.ع</span>
+                        <span class="product-price" id="tiramisu-price">4 ر.ع</span>
                         <button class="add-to-cart-btn" onclick="addToCart('ترايمسو', 'tiramisu')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
 
             <div class="product-card" id="prod-baklava">
-                <img src="thecscake.jpg" alt="تشيزكيك البقلاوة" class="product-img">
+                <img src="thecscake.png" alt="بقلاوة تراميسو" class="product-img">
                 <div class="product-info">
-                    <h3>تشيزكيك البقلاوة</h3>
+                    <h3>بقلاوة تراميسو</h3>
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
-                            <button class="option-btn active" onclick="selectSize('baklava', 'صغير', 3)">صغير</button>
+                            <button class="option-btn active" onclick="selectSize('baklava', 'صغير', 4)">صغير</button>
                             <button class="option-btn" onclick="selectSize('baklava', 'وسط', 6)">وسط</button>
-                            <button class="option-btn" onclick="selectSize('baklava', 'كبير', 9)">كبير</button>
+                            <button class="option-btn" onclick="selectSize('baklava', 'كبير', 12)">كبير</button>
                         </div>
                     </div>
                     <div class="price-row">
-                        <span class="product-price" id="baklava-price">3 ر.ع</span>
+                        <span class="product-price" id="baklava-price">4 ر.ع</span>
                         <button class="add-to-cart-btn" onclick="addToCart('تشيزكيك البقلاوة', 'baklava')">أضف للسلة</button>
                     </div>
                 </div>
@@ -453,31 +460,70 @@
 
         </div>
 
-        <section class="catering-section">
+        <section class="custom-section">
+            <h2 style="color: var(--burgundy); margin-bottom: 10px;">بوكس الجمعات (الحجم الصغير)</h2>
+            <p>اختر أي صنفين من الأصناف الثلاثة الحجم الصغير للحصول على البوكس المجمع بقيمة 10 ر.ع فقط.</p>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" class="box-choice" value="ترافل مانجو (صغير)">
+                    <span>ترافل مانجو (الحجم الصغير)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="box-choice" value="ترايمسو (صغير)">
+                    <span>ترايمسو (الحجم الصغير)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="box-choice" value="تشيزكيك البقلاوة (صغير)">
+                    <span>تشيزكيك البقلاوة (الحجم الصغير)</span>
+                </label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                <div>سعر البوكس المجمع: <span style="font-size: 22px; font-weight: bold; color: var(--burgundy);">10 ر.ع</span></div>
+                <button type="button" class="add-to-cart-btn" onclick="addCustomBoxToCart()">أضف البوكس للسلة</button>
+            </div>
+        </section>
+
+        <section class="custom-section">
             <h2 style="color: var(--burgundy); margin-bottom: 10px;">حجز عربة التقديم للحفلات والمناسبات</h2>
             <p>أضف لمسة ضيافة راقية لمناسبتك بعربة مجهزة بالكامل متناسقة مع ألوان الهوية الفاخرة.</p>
-            <form class="catering-form" onsubmit="event.preventDefault(); addCateringToCart();">
-                <div class="form-group">
+            <form onsubmit="event.preventDefault(); addCateringToCart();" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 8px;">
                     <label>تاريخ الحفل والمناسبة:</label>
-                    <input type="date" id="cat-date" required>
+                    <input type="date" id="cat-date" style="padding: 10px; border: 1px solid var(--beige-dark); border-radius: 4px; background-color: var(--beige-light);" required>
                 </div>
-                <div class="form-group">
-                    <label>نوع السويت المفضل للعربة:</label>
-                    <select id="cat-sweet-type">
-                        <option value="ترافل مانجو">ترافل مانجو</option>
-                        <option value="ترايمسو">ترايمسو</option>
-                        <option value="تشيزكيك البقلاوة">تشيزكيك البقلاوة</option>
-                        <option value="تشكيلة كاملة">تشكيلة من الثلاث أنواع</option>
-                    </select>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label>حدد أنواع الأصناف المفضلة لعربة الضيافة (صنفين بـ 60 ر.ع / 3 أصناف أو أكثر بـ 90 ر.ع):</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="ترافل" onchange="updateCateringPrice()">
+                            <span>ترافل</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="تراميسو" onchange="updateCateringPrice()">
+                            <span>تراميسو</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="بقلاوة تراميسو" onchange="updateCateringPrice()">
+                            <span>بقلاوة تراميسو</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="تشيز كيك باشن" onchange="updateCateringPrice()">
+                            <span>تشيز كيك باشن</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="تشيز كيك بيري" onchange="updateCateringPrice()">
+                            <span>تشيز كيك بيري</span>
+                        </label>
+                    </div>
                 </div>
                 <div style="grid-column: 1 / -1;">
                     <div class="toggle-container">
                         <input type="checkbox" id="cat-staff" style="width: 20px; height: 20px;" onchange="updateCateringPrice()">
-                        <label for="cat-staff" style="font-weight: bold; cursor: pointer;">طلب الخدمة مع عاملة ضيافة محترفة (+10 ر.ع)</label>
+                        <label for="cat-staff" style="font-weight: bold; cursor: pointer;">طلب الخدمة مع عاملة ضيافة محترفة (+15 ر.ع)</label>
                     </div>
                 </div>
                 <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                    <div>السعر الكلي للعربة: <span id="cat-total-price" style="font-size: 22px; font-weight: bold; color: var(--burgundy);">30 ر.ع</span></div>
+                    <div>السعر الكلي للعربة: <span id="cat-total-price" style="font-size: 22px; font-weight: bold; color: var(--burgundy);">0 ر.ع</span></div>
                     <button type="submit" class="add-to-cart-btn">احجز العربة الآن</button>
                 </div>
             </form>
@@ -496,7 +542,7 @@
         
         <div class="cart-footer">
             <div class="user-info-box">
-                <h4>📝 بيانات العميل (مطلوب للتوصيل):</h4>
+                <h4>بيانات العميل (مطلوب للتوصيل):</h4>
                 <input type="text" id="custName" placeholder="اسم العميل الكامل" required>
                 <input type="tel" id="custPhone" placeholder="رقم الهاتف (واتساب)" required>
             </div>
@@ -505,11 +551,11 @@
                 <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">اختر طريقة الدفع:</span>
                 <label class="payment-option">
                     <input type="radio" name="payMethod" value="الدفع عند الاستلام (COD)" checked>
-                    <span>💵 الدفع عند الاستلام (COD)</span>
+                    <span>الدفع عند الاستلام (COD)</span>
                 </label>
                 <label class="payment-option">
                     <input type="radio" name="payMethod" value="دفع إلكتروني (بوابة الدفع)">
-                    <span>💳 دفع إلكتروني (مدى / Apple Pay)</span>
+                    <span>دفع إلكتروني (مدى / Apple Pay)</span>
                 </label>
             </div>
 
@@ -528,9 +574,9 @@
     <script>
         let cart = [];
         let state = {
-            mango: { size: 'صغير', price: 3 },
-            tiramisu: { size: 'صغير', price: 3 },
-            baklava: { size: 'صغير', price: 3 }
+            mango: { size: 'صغير', price: 4 },
+            tiramisu: { size: 'صغير', price: 4 },
+            baklava: { size: 'صغير', price: 4 }
         };
 
         function selectSize(prod, size, price) {
@@ -551,15 +597,60 @@
             document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
         }
 
+        // إضافة البوكس المجمع الجديد إلى السلة والتحقق من تحديد صنفين
+        function addCustomBoxToCart() {
+            const checkedBoxes = document.querySelectorAll('.box-choice:checked');
+            if (checkedBoxes.length !== 2) {
+                alert('فضلاً، يجب عليك تحديد صنفين فقط من الخيارات المتاحة لتكوين البوكس.');
+                return;
+            }
+            
+            const items = Array.from(checkedBoxes).map(cb => cb.value).join(' و ');
+            
+            cart.push({
+                name: 'بوكس الجمعات',
+                details: `المكونات: ${items} | الحجم: صغير`,
+                price: 10,
+                qty: 1
+            });
+            
+            updateCartUI();
+            toggleCart(true);
+            
+            // إلغاء تحديد المربعات بعد الإضافة
+            document.querySelectorAll('.box-choice').forEach(cb => cb.checked = false);
+        }
+
+        function getCateringCalculation() {
+            const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
+            const hasStaff = document.getElementById('cat-staff').checked;
+            
+            let count = checkedBoxes.length;
+            let basePrice = 0;
+            
+            if (count >= 3) {
+                basePrice = 90;
+            } else if (count === 1 || count === 2) {
+                basePrice = 60;
+            }
+            
+            let extraStaff = hasStaff ? 15 : 0;
+            return {
+                basePrice: basePrice,
+                extraStaff: extraStaff,
+                total: basePrice + extraStaff,
+                selectedItems: Array.from(checkedBoxes).map(cb => cb.value)
+            };
+        }
+
         function updateCateringPrice() {
-            let total = document.getElementById('cat-staff').checked ? 40 : 30;
-            document.getElementById('cat-total-price').textContent = `${total} ر.ع`;
+            const calc = getCateringCalculation();
+            document.getElementById('cat-total-price').textContent = `${calc.total} ر.ع`;
         }
 
         function addToCart(name, key) {
             let details = `طبق حجم (${state[key].size})`;
             
-            // ميزة تجميع العناصر المتشابهة وحساب العدد تلقائياً
             let existingItem = cart.find(item => item.name === name && item.details === details);
             if(existingItem) {
                 existingItem.qty += 1;
@@ -573,13 +664,29 @@
 
         function addCateringToCart() {
             const date = document.getElementById('cat-date').value;
-            const sweet = document.getElementById('cat-sweet-type').value;
-            const staff = document.getElementById('cat-staff').checked ? "مع عامله" : "بدون عامله";
-            let price = document.getElementById('cat-staff').checked ? 40 : 30;
+            const calc = getCateringCalculation();
             
-            cart.push({ name: 'حجز عربة مناسبات', details: `التاريخ: ${date} | صنف: ${sweet} | ${staff}`, price: price, qty: 1 });
+            if (calc.selectedItems.length === 0) {
+                alert('فضلاً، حدد صنفاً واحداً على الأقل لعربة الضيافة أولاً.');
+                return;
+            }
+            
+            const staffText = document.getElementById('cat-staff').checked ? "مع عاملة ضيافة (+15 ر.ع)" : "بدون عاملة";
+            const itemsListText = calc.selectedItems.join(' و ');
+            
+            cart.push({ 
+                name: 'حجز عربة مناسبات', 
+                details: `التاريخ: ${date} | الأصناف المحددة: (${itemsListText}) | ${staffText}`, 
+                price: calc.total, 
+                qty: 1 
+            });
+            
             updateCartUI();
             toggleCart(true);
+            
+            document.querySelectorAll('.sweet-choice').forEach(cb => cb.checked = false);
+            document.getElementById('cat-staff').checked = false;
+            document.getElementById('cat-total-price').textContent = "0 ر.ع";
         }
 
         function toggleCart(open) {
@@ -613,7 +720,6 @@
                 return;
             }
 
-            // التحقق من إدخال اسم ورقم الزبون
             const clientName = document.getElementById('custName').value.trim();
             const clientPhone = document.getElementById('custPhone').value.trim();
 
@@ -626,30 +732,27 @@
             let totalSum = document.getElementById('cartTotalSum').textContent;
             let totalItemsCount = cart.reduce((sum, item) => sum + item.qty, 0);
             
-            // إنشاء الفاتورة الشاملة للاسم والرقم والعدد للواتساب
-            let message = `*فاتورة طلب جديد من متجر VEL SWEETS* 🧁✨\n\n`;
-            message += `👤 *اسم العميل:* ${clientName}\n`;
-            message += `📞 *رقم العميل:* ${clientPhone}\n`;
-            message += `📊 *إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
+            let message = `*فاتورة طلب جديد من متجر VEL SWEETS*\n\n`;
+            message += `*اسم العميل:* ${clientName}\n`;
+            message += `*رقم العميل:* ${clientPhone}\n`;
+            message += `*إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
             message += `----------------------------------\n`;
-            message += `📦 *تفاصيل الأصناف والعدد:*\n`;
+            message += `*تفاصيل الأصناف والعدد:*\n`;
             
             cart.forEach((item, index) => {
                 message += `${index + 1}. [العدد: ${item.qty}] - ${item.name} - ${item.details} (${item.price * item.qty} ر.ع)\n`;
             });
             
             message += `----------------------------------\n`;
-            message += `💰 *المجموع الكلي الفاخر:* ${totalSum}\n`;
-            message += `💳 *طريقة السداد:* ${selectedMethod}\n\n`;
+            message += `*المجموع الكلي الفاخر:* ${totalSum}\n`;
+            message += `*طريقة السداد:* ${selectedMethod}\n\n`;
             message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للتوصيل الفوري.`;
             
-            // رابط التوجيه المباشر إلى رقم واتساب صاحب المشروع (ضع رقمك مكان الـ XXXXXXXX)
             let whatsappUrl = `https://api.whatsapp.com/send?phone=96872557922&text=${encodeURIComponent(message)}`;
             
-            alert('شكراً لطلبك! سيتم الآن فتح الواتساب تلقائياً لإرسال الفاتورة الرسمية التي تحمل اسمك وتفاصيل طلبك إلى إدارة المتجر.');
+            alert('شكراً لطلبك! سيتم الآن فتح الواتساب تلقائياً لتسليم الفاتورة الرسمية.');
             window.open(whatsappUrl, '_blank');
             
-            // إعادة ضبط السلة والبيانات بعد الإرسال
             cart = [];
             document.getElementById('custName').value = "";
             document.getElementById('custPhone').value = "";
