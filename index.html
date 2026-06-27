@@ -462,18 +462,18 @@
 
         <section class="custom-section">
             <h2 style="color: var(--burgundy); margin-bottom: 10px;">بوكس الأصناف الثنائية (الحجم الصغير)</h2>
-            <p>اختر أي صنفين من الأصناف الثلاثة الحجم الصغير للحصول على البوكس المجمع بقيمة 10 ر.ع فقط.</p>
+            <p>اختر صنفين فقط كحد أقصى من الأصناف الثلاثة الحجم الصغير للحصول على البوكس المجمع بقيمة 10 ر.ع.</p>
             <div class="checkbox-group">
                 <label class="checkbox-label">
-                    <input type="checkbox" class="box-choice" value="ترافل مانجو (صغير)">
+                    <input type="checkbox" class="box-choice" value="ترافل مانجو (صغير)" onchange="checkBoxLimit(this)">
                     <span>ترافل مانجو (الحجم الصغير)</span>
                 </label>
                 <label class="checkbox-label">
-                    <input type="checkbox" class="box-choice" value="تيرامسو (صغير)">
+                    <input type="checkbox" class="box-choice" value="تيرامسو (صغير)" onchange="checkBoxLimit(this)">
                     <span>تيرامسو (الحجم الصغير)</span>
                 </label>
                 <label class="checkbox-label">
-                    <input type="checkbox" class="box-choice" value="بقلاوة تراميسو (صغير)">
+                    <input type="checkbox" class="box-choice" value="بقلاوة تراميسو (صغير)" onchange="checkBoxLimit(this)">
                     <span>بقلاوة تراميسو (الحجم الصغير)</span>
                 </label>
             </div>
@@ -597,10 +597,19 @@
             document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
         }
 
+        // دالة ذكية للتحقق من قصر الاختيار على صنفين كحد أقصى في بوكس الأصناف الثنائية
+        function checkBoxLimit(element) {
+            const checkedBoxes = document.querySelectorAll('.box-choice:checked');
+            if (checkedBoxes.length > 2) {
+                alert('عذراً، الحد الأقصى المسموح به للبوكس الثنائي هو صنفين فقط.');
+                element.checked = false; // إلغاء الاختيار الزائد فوراً
+            }
+        }
+
         function addCustomBoxToCart() {
             const checkedBoxes = document.querySelectorAll('.box-choice:checked');
             if (checkedBoxes.length !== 2) {
-                alert('فضلاً، يجب عليك تحديد صنفين فقط من الخيارات المتاحة لتكوين البوكس.');
+                alert('فضلاً، يجب عليك تحديد صنفين تماماً لتكوين البوكس.');
                 return;
             }
             
@@ -619,12 +628,11 @@
             document.querySelectorAll('.box-choice').forEach(cb => cb.checked = false);
         }
 
-        // دالة ذكية للتحقق من التحديد المسموح به ومنع اختيار الصنف الرابع
         function checkCateringLimit(element) {
             const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
             if (checkedBoxes.length > 3) {
                 alert('عذراً، الحد الأقصى للاختيار هو 3 أصناف فقط لعربة التقديم.');
-                element.checked = false; // إلغاء تحديد الخيار الزائد فوراً
+                element.checked = false;
             }
             updateCateringPrice();
         }
@@ -640,8 +648,6 @@
                 basePrice = 90;
             } else if (count === 2) {
                 basePrice = 60;
-            } else if (count === 1) {
-                basePrice = 0; // حسب تسعيرتك، الإتاحة صنفين أو ثلاثة فقط
             }
             
             let extraStaff = hasStaff ? 15 : 0;
