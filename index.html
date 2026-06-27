@@ -237,7 +237,7 @@
             font-weight: bold;
         }
 
-        /* قسم بوكس صنفين المجمع وقسم عربة الحفلات */
+        /* قسم بوكس صنفين وقسم عربة الحفلات */
         .custom-section {
             background-color: var(--white);
             padding: 30px;
@@ -423,7 +423,7 @@
             <div class="product-card" id="prod-tiramisu">
                 <img src="trameso.jpg" alt="تيرامسو" class="product-img">
                 <div class="product-info">
-                    <h3>تراميسو</h3>
+                    <h3>تيرامسو</h3>
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
@@ -434,7 +434,7 @@
                     </div>
                     <div class="price-row">
                         <span class="product-price" id="tiramisu-price">4 ر.ع</span>
-                        <button class="add-to-cart-btn" onclick="addToCart('ترايمسو', 'tiramisu')">أضف للسلة</button>
+                        <button class="add-to-cart-btn" onclick="addToCart('تيرامسو', 'tiramisu')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
@@ -453,7 +453,7 @@
                     </div>
                     <div class="price-row">
                         <span class="product-price" id="baklava-price">4 ر.ع</span>
-                        <button class="add-to-cart-btn" onclick="addToCart('تشيزكيك البقلاوة', 'baklava')">أضف للسلة</button>
+                        <button class="add-to-cart-btn" onclick="addToCart('بقلاوة تراميسو', 'baklava')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
@@ -461,7 +461,7 @@
         </div>
 
         <section class="custom-section">
-            <h2 style="color: var(--burgundy); margin-bottom: 10px;">بوكس الجمعات (الحجم الصغير)</h2>
+            <h2 style="color: var(--burgundy); margin-bottom: 10px;">بوكس الأصناف الثنائية (الحجم الصغير)</h2>
             <p>اختر أي صنفين من الأصناف الثلاثة الحجم الصغير للحصول على البوكس المجمع بقيمة 10 ر.ع فقط.</p>
             <div class="checkbox-group">
                 <label class="checkbox-label">
@@ -469,12 +469,12 @@
                     <span>ترافل مانجو (الحجم الصغير)</span>
                 </label>
                 <label class="checkbox-label">
-                    <input type="checkbox" class="box-choice" value="ترايمسو (صغير)">
-                    <span>ترايمسو (الحجم الصغير)</span>
+                    <input type="checkbox" class="box-choice" value="تيرامسو (صغير)">
+                    <span>تيرامسو (الحجم الصغير)</span>
                 </label>
                 <label class="checkbox-label">
-                    <input type="checkbox" class="box-choice" value="تشيزكيك البقلاوة (صغير)">
-                    <span>تشيزكيك البقلاوة (الحجم الصغير)</span>
+                    <input type="checkbox" class="box-choice" value="بقلاوة تراميسو (صغير)">
+                    <span>بقلاوة تراميسو (الحجم الصغير)</span>
                 </label>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
@@ -485,33 +485,33 @@
 
         <section class="custom-section">
             <h2 style="color: var(--burgundy); margin-bottom: 10px;">حجز عربة التقديم للحفلات والمناسبات</h2>
-            <p>أضف لمسة ضيافة راقية لمناسبتك بعربة مجهزة بالكامل متناسقة مع ألوان الهوية الفاخرة.</p>
+            <p>أضف لمسة ضيافة راقية لمناسبتك بعربة مجهزة بالكامل (يجب اختيار صنفين أو 3 أصناف كحد أقصى).</p>
             <form onsubmit="event.preventDefault(); addCateringToCart();" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
                 <div style="display: flex; flex-direction: column; gap: 8px;">
                     <label>تاريخ الحفل والمناسبة:</label>
                     <input type="date" id="cat-date" style="padding: 10px; border: 1px solid var(--beige-dark); border-radius: 4px; background-color: var(--beige-light);" required>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <label>حدد أنواع الأصناف المفضلة لعربة الضيافة (صنفين بـ 60 ر.ع / 3 أصناف أو أكثر بـ 90 ر.ع):</label>
+                    <label>حدد أنواع الأصناف المفضلة (صنفين بـ 60 ر.ع / 3 أصناف بـ 90 ر.ع):</label>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" class="sweet-choice" value="ترافل" onchange="updateCateringPrice()">
+                            <input type="checkbox" class="sweet-choice" value="ترافل" onchange="checkCateringLimit(this)">
                             <span>ترافل</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" class="sweet-choice" value="تراميسو" onchange="updateCateringPrice()">
+                            <input type="checkbox" class="sweet-choice" value="تراميسو" onchange="checkCateringLimit(this)">
                             <span>تراميسو</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" class="sweet-choice" value="بقلاوة تراميسو" onchange="updateCateringPrice()">
+                            <input type="checkbox" class="sweet-choice" value="بقلاوة تراميسو" onchange="checkCateringLimit(this)">
                             <span>بقلاوة تراميسو</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" class="sweet-choice" value="تشيز كيك باشن" onchange="updateCateringPrice()">
+                            <input type="checkbox" class="sweet-choice" value="تشيز كيك باشن" onchange="checkCateringLimit(this)">
                             <span>تشيز كيك باشن</span>
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" class="sweet-choice" value="تشيز كيك بيري" onchange="updateCateringPrice()">
+                            <input type="checkbox" class="sweet-choice" value="تشيز كيك بيري" onchange="checkCateringLimit(this)">
                             <span>تشيز كيك بيري</span>
                         </label>
                     </div>
@@ -597,7 +597,6 @@
             document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
         }
 
-        // إضافة البوكس المجمع الجديد إلى السلة والتحقق من تحديد صنفين
         function addCustomBoxToCart() {
             const checkedBoxes = document.querySelectorAll('.box-choice:checked');
             if (checkedBoxes.length !== 2) {
@@ -608,7 +607,7 @@
             const items = Array.from(checkedBoxes).map(cb => cb.value).join(' و ');
             
             cart.push({
-                name: 'بوكس الجمعات',
+                name: 'بوكس الأصناف الثنائية',
                 details: `المكونات: ${items} | الحجم: صغير`,
                 price: 10,
                 qty: 1
@@ -617,8 +616,17 @@
             updateCartUI();
             toggleCart(true);
             
-            // إلغاء تحديد المربعات بعد الإضافة
             document.querySelectorAll('.box-choice').forEach(cb => cb.checked = false);
+        }
+
+        // دالة ذكية للتحقق من التحديد المسموح به ومنع اختيار الصنف الرابع
+        function checkCateringLimit(element) {
+            const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
+            if (checkedBoxes.length > 3) {
+                alert('عذراً، الحد الأقصى للاختيار هو 3 أصناف فقط لعربة التقديم.');
+                element.checked = false; // إلغاء تحديد الخيار الزائد فوراً
+            }
+            updateCateringPrice();
         }
 
         function getCateringCalculation() {
@@ -628,14 +636,17 @@
             let count = checkedBoxes.length;
             let basePrice = 0;
             
-            if (count >= 3) {
+            if (count === 3) {
                 basePrice = 90;
-            } else if (count === 1 || count === 2) {
+            } else if (count === 2) {
                 basePrice = 60;
+            } else if (count === 1) {
+                basePrice = 0; // حسب تسعيرتك، الإتاحة صنفين أو ثلاثة فقط
             }
             
             let extraStaff = hasStaff ? 15 : 0;
             return {
+                count: count,
                 basePrice: basePrice,
                 extraStaff: extraStaff,
                 total: basePrice + extraStaff,
@@ -666,8 +677,8 @@
             const date = document.getElementById('cat-date').value;
             const calc = getCateringCalculation();
             
-            if (calc.selectedItems.length === 0) {
-                alert('فضلاً، حدد صنفاً واحداً على الأقل لعربة الضيافة أولاً.');
+            if (calc.count !== 2 && calc.count !== 3) {
+                alert('فضلاً، يرجى تحديد (صنفين) أو (3 أصناف) فقط لإتمام حجز العربة بنجاح.');
                 return;
             }
             
@@ -676,7 +687,7 @@
             
             cart.push({ 
                 name: 'حجز عربة مناسبات', 
-                details: `التاريخ: ${date} | الأصناف المحددة: (${itemsListText}) | ${staffText}`, 
+                details: `التاريخ: ${date} | الأصناف المحددة: ${calc.count} أصناف (${itemsListText}) | ${staffText}`, 
                 price: calc.total, 
                 qty: 1 
             });
