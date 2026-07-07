@@ -335,13 +335,34 @@
             margin-bottom: 10px;
         }
 
+        .user-info-box label {
+            font-size: 12px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+
         .user-info-box input, .user-info-box select {
             width: 100%;
             padding: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border: 1px solid var(--beige-dark);
             border-radius: 4px;
             font-size: 13px;
+        }
+
+        .day-display-badge {
+            background-color: var(--beige-dark);
+            color: var(--text-dark);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 12px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         /* خيارات الدفع في السلة */
@@ -543,15 +564,16 @@
         <div class="cart-footer">
             <div class="user-info-box">
                 <h4>بيانات العميل (مطلوب للتوصيل):</h4>
+                <label for="custName">الاسم الكامل:</label>
                 <input type="text" id="custName" placeholder="اسم العميل الكامل" required>
+                
+                <label for="custPhone">رقم الواتساب:</label>
                 <input type="tel" id="custPhone" placeholder="رقم الهاتف (واتساب)" required>
-                <select id="deliveryDay" required>
-                    <option value="" disabled selected>اختر يوم استلام الطلب</option>
-                    <option value="الأحد">الأحد</option>
-                    <option value="الإثنين">الإثنين</option>
-                    <option value="الثلاثاء">الثلاثاء</option>
-                </select>
-                <input type="date" id="deliveryDate" required title="اختر تاريخ الاستلام المتوافق مع اليوم">
+                
+                <label for="deliveryDate">اختر تاريخ استلام الطلب (الأحد، الإثنين، الثلاثاء فقط):</label>
+                <input type="date" id="deliveryDate" onchange="validateAndGetDay(this.value)" required>
+                
+                <div id="dayDisplay" class="day-display-badge" style="display: none;">اليوم المحدد: لم يتم تحديد تاريخ بعد</div>
             </div>
 
             <div class="payment-methods-box">
@@ -561,7 +583,7 @@
                     <span>تحويل بنكي مسبق</span>
                 </label>
                 <div style="margin-top: 10px; font-size: 12px; color: #b01025; font-weight: bold; line-height: 1.4;">
-                    * ملاحظة: يتم التحويل مباشرة عن طريق الرقم المتصل بالواتساب الموضح بالأسفل، ويجب إرفاق إيصال الدفع لتأكيد طلبكم.
+                    * ملاحظة: يتم التحويل مباشرة عن طريق الرقم المرتبط بالواتساب الحالي الذي تتواصل معه، ويجب إرفاق إيصال الدفع لتأكيد طلبكم.
                 </div>
             </div>
 
@@ -584,6 +606,7 @@
             tiramisu: { size: 'صغير', price: 4 },
             baklava: { size: 'صغير', price: 4 }
         };
+        let detectedDayName = ""; // لتخزين اليوم المكتشف برمجياً
 
         function selectSize(prod, size, price) {
             state[prod].size = size;
@@ -601,6 +624,36 @@
             });
             
             document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
+        }
+
+        function validateAndGetDay(dateString) {
+            const dayDisplay = document.getElementById('dayDisplay');
+            if (!dateString) {
+                dayDisplay.style.display = "none";
+                detectedDayName = "";
+                return;
+            }
+
+            const dateObj = new Date(dateString);
+            const daysOfWeek = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const dayName = daysOfWeek[dateObj.getDay()];
+
+            // التحقق من الأيام المتاحة فقط (الأحد، الإثنين، الثلاثاء)
+            if (dayName === 'الأحد' || dayName === 'الإثنين' || dayName === 'الثلاثاء') {
+                detectedDayName = dayName;
+                dayDisplay.style.display = "inline-block";
+                dayDisplay.textContent = `اليوم المكتشف: ${dayName}`;
+                dayDisplay.style.color = "var(--text-dark)";
+                dayDisplay.style.backgroundColor = "var(--beige-dark)";
+            } else {
+                alert('تنبيه: التوصيل متاح فقط أيام (الأحد، الإثنين، الثلاثاء). يرجى اختيار تاريخ مناسب لهذه الأيام.');
+                document.getElementById('deliveryDate').value = "";
+                dayDisplay.style.display = "inline-block";
+                dayDisplay.textContent = `عذراً، يوم (${dayName}) غير متاح للتوصيل!`;
+                dayDisplay.style.color = "#white";
+                dayDisplay.style.backgroundColor = "#ffdddd";
+                detectedDayName = "";
+            }
         }
 
         function checkBoxLimit(element) {
@@ -744,12 +797,11 @@
 
             const clientName = document.getElementById('custName').value.trim();
             const clientPhone = document.getElementById('custPhone').value.trim();
-            const deliveryDay = document.getElementById('deliveryDay').value;
             const deliveryDate = document.getElementById('deliveryDate').value;
             const storeWhatsappNumber = "96872557922";
 
-            if (!clientName || !clientPhone || !deliveryDay || !deliveryDate) {
-                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم وتاريخ الاستلام لتأكيد الطلب.');
+            if (!clientName || !clientPhone || !deliveryDate || !detectedDayName) {
+                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار تاريخ استلام صحيح (الأحد، الإثنين، الثلاثاء) لتأكيد الطلب.');
                 return;
             }
             
@@ -760,7 +812,7 @@
             let message = `*فاتورة طلب جديد من متجر VEL SWEETS*\n\n`;
             message += `*اسم العميل:* ${clientName}\n`;
             message += `*رقم العميل:* ${clientPhone}\n`;
-            message += `*يوم وتاريخ استلام الطلب:* ${deliveryDay} (${deliveryDate})\n`;
+            message += `*يوم وتاريخ استلام الطلب:* ${detectedDayName} (${deliveryDate})\n`;
             message += `*إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
             message += `----------------------------------\n`;
             message += `*تفاصيل الأصناف والعدد:*\n`;
@@ -772,20 +824,21 @@
             message += `----------------------------------\n`;
             message += `*المجموع الكلي الفاخر:* ${totalSum}\n`;
             message += `*طريقة السداد:* ${selectedMethod}\n`;
-            message += `*حساب التحويل:* يتم التحويل إلى الرقم الخاص بالمتجر الحالي للواتساب وهو (${storeWhatsappNumber})\n\n`;
-            message += `*⚠️ تنبيه هام جدًا:* يرجى إرفاق صورة إيصال التحويل البنكي هنا في المحادثة مباشرةً بعد إرسال هذه الرسالة لتأكيد طلبكم البدء في التجهيز.\n\n`;
+            message += `*حساب التحويل:* يتم التحويل مباشرة إلى الرقم المرتبط بالواتساب الحالي الذي تتواصل معه الآن.\n\n`;
+            message += `*⚠️ تنبيه هام جدًا:* يرجى إرفاق صورة إيصال التحويل البنكي هنا في هذه المحادثة مباشرةً بعد إرسال الرسالة لتأكيد طلبكم وبدء التجهيز.\n\n`;
             message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للاستلام الفوري.`;
             
             let whatsappUrl = `https://api.whatsapp.com/send?phone=${storeWhatsappNumber}&text=${encodeURIComponent(message)}`;
             
-            alert('شكراً لطلبك! سيتم فتح الواتساب الآن تلقائياً لتسليم الفاتورة. يرجى إرسال الفاتورة ثم إرفاق إيصال التحويل البنكي لنفس الرقم.');
+            alert('شكراً لطلبك! سيتم فتح الواتساب الآن تلقائياً لتسليم الفاتورة. يرجى إرسال الفاتورة ثم إرفاق إيصال التحويل البنكي لنفس رقم المحادثة.');
             window.open(whatsappUrl, '_blank');
             
             cart = [];
             document.getElementById('custName').value = "";
             document.getElementById('custPhone').value = "";
-            document.getElementById('deliveryDay').value = "";
             document.getElementById('deliveryDate').value = "";
+            document.getElementById('dayDisplay').style.display = "none";
+            detectedDayName = "";
             updateCartUI();
             toggleCart(false);
         }
