@@ -646,10 +646,10 @@
                 dayDisplay.style.color = "var(--text-dark)";
                 dayDisplay.style.backgroundColor = "var(--beige-dark)";
             } else {
-                alert('تنبيه: التوصيل متاح فقط أيام (الأحد، الإثنين، الثلاثاء). يرجى اختيار تاريخ مناسب لهذه الأيام.');
+                alert('تنبيه: الطلب متاح فقط أيام (الأحد، الإثنين، الثلاثاء). يرجى اختيار تاريخ مناسب لهذه الأيام.');
                 document.getElementById('deliveryDate').value = "";
                 dayDisplay.style.display = "inline-block";
-                dayDisplay.textContent = `عذراً، يوم (${dayName}) غير متاح للتوصيل!`;
+                dayDisplay.textContent = `عذراً، يوم (${dayName}) غير متاح للطلب!`;
                 dayDisplay.style.color = "#white";
                 dayDisplay.style.backgroundColor = "#ffdddd";
                 detectedDayName = "";
