@@ -551,16 +551,17 @@
                     <option value="الإثنين">الإثنين</option>
                     <option value="الثلاثاء">الثلاثاء</option>
                 </select>
+                <input type="date" id="deliveryDate" required title="اختر تاريخ الاستلام المتوافق مع اليوم">
             </div>
 
             <div class="payment-methods-box">
                 <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">طريقة الدفع:</span>
                 <label class="payment-option">
-                    <input type="radio" name="payMethod" value="الدفع عند الاستلام (COD)" checked>
-                    <span>الدفع عند الاستلام (COD)</span>
+                    <input type="radio" name="payMethod" value="التحويل البنكي المسبق" checked>
+                    <span>تحويل بنكي مسبق</span>
                 </label>
-                <div style="margin-top: 10px; font-size: 12px; color: #d00; font-weight: bold;">
-                    * تنبيه: يجب إرفاق إيصال الدفع لتأكيد الطلب.
+                <div style="margin-top: 10px; font-size: 12px; color: #b01025; font-weight: bold; line-height: 1.4;">
+                    * ملاحظة: يتم التحويل مباشرة عن طريق الرقم المتصل بالواتساب الموضح بالأسفل، ويجب إرفاق إيصال الدفع لتأكيد طلبكم.
                 </div>
             </div>
 
@@ -602,12 +603,11 @@
             document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
         }
 
-        // دالة ذكية للتحقق من قصر الاختيار على صنفين كحد أقصى في بوكس الأصناف الثنائية
         function checkBoxLimit(element) {
             const checkedBoxes = document.querySelectorAll('.box-choice:checked');
             if (checkedBoxes.length > 2) {
                 alert('عذراً، الحد الأقصى المسموح به للبوكس الثنائي هو صنفين فقط.');
-                element.checked = false; // إلغاء الاختيار الزائد فوراً
+                element.checked = false;
             }
         }
 
@@ -745,9 +745,11 @@
             const clientName = document.getElementById('custName').value.trim();
             const clientPhone = document.getElementById('custPhone').value.trim();
             const deliveryDay = document.getElementById('deliveryDay').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const storeWhatsappNumber = "96872557922";
 
-            if (!clientName || !clientPhone || !deliveryDay) {
-                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم الاستلام لتأكيد الطلب.');
+            if (!clientName || !clientPhone || !deliveryDay || !deliveryDate) {
+                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم وتاريخ الاستلام لتأكيد الطلب.');
                 return;
             }
             
@@ -758,7 +760,7 @@
             let message = `*فاتورة طلب جديد من متجر VEL SWEETS*\n\n`;
             message += `*اسم العميل:* ${clientName}\n`;
             message += `*رقم العميل:* ${clientPhone}\n`;
-            message += `*يوم استلام الطلب:* ${deliveryDay}\n`;
+            message += `*يوم وتاريخ استلام الطلب:* ${deliveryDay} (${deliveryDate})\n`;
             message += `*إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
             message += `----------------------------------\n`;
             message += `*تفاصيل الأصناف والعدد:*\n`;
@@ -769,19 +771,21 @@
             
             message += `----------------------------------\n`;
             message += `*المجموع الكلي الفاخر:* ${totalSum}\n`;
-            message += `*طريقة السداد:* ${selectedMethod}\n\n`;
-            message += `*⚠️ تنبيه هام:* يجب إرفاق إيصال الدفع لتأكيد الطلب.\n\n`;
-            message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للتوصيل الفوري.`;
+            message += `*طريقة السداد:* ${selectedMethod}\n`;
+            message += `*حساب التحويل:* يتم التحويل إلى الرقم الخاص بالمتجر الحالي للواتساب وهو (${storeWhatsappNumber})\n\n`;
+            message += `*⚠️ تنبيه هام جدًا:* يرجى إرفاق صورة إيصال التحويل البنكي هنا في المحادثة مباشرةً بعد إرسال هذه الرسالة لتأكيد طلبكم البدء في التجهيز.\n\n`;
+            message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للاستلام الفوري.`;
             
-            let whatsappUrl = `https://api.whatsapp.com/send?phone=96872557922&text=${encodeURIComponent(message)}`;
+            let whatsappUrl = `https://api.whatsapp.com/send?phone=${storeWhatsappNumber}&text=${encodeURIComponent(message)}`;
             
-            alert('شكراً لطلبك! سيتم الآن فتح الواتساب تلقائياً لتسليم الفاتورة الرسمية. تذكر إرفاق إيصال الدفع.');
+            alert('شكراً لطلبك! سيتم فتح الواتساب الآن تلقائياً لتسليم الفاتورة. يرجى إرسال الفاتورة ثم إرفاق إيصال التحويل البنكي لنفس الرقم.');
             window.open(whatsappUrl, '_blank');
             
             cart = [];
             document.getElementById('custName').value = "";
             document.getElementById('custPhone').value = "";
             document.getElementById('deliveryDay').value = "";
+            document.getElementById('deliveryDate').value = "";
             updateCartUI();
             toggleCart(false);
         }
