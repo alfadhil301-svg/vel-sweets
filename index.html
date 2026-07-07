@@ -335,7 +335,7 @@
             margin-bottom: 10px;
         }
 
-        .user-info-box input {
+        .user-info-box input, .user-info-box select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -545,18 +545,23 @@
                 <h4>بيانات العميل (مطلوب للتوصيل):</h4>
                 <input type="text" id="custName" placeholder="اسم العميل الكامل" required>
                 <input type="tel" id="custPhone" placeholder="رقم الهاتف (واتساب)" required>
+                <select id="deliveryDay" required>
+                    <option value="" disabled selected>اختر يوم استلام الطلب</option>
+                    <option value="الأحد">الأحد</option>
+                    <option value="الإثنين">الإثنين</option>
+                    <option value="الثلاثاء">الثلاثاء</option>
+                </select>
             </div>
 
             <div class="payment-methods-box">
-                <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">اختر طريقة الدفع:</span>
+                <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">طريقة الدفع:</span>
                 <label class="payment-option">
                     <input type="radio" name="payMethod" value="الدفع عند الاستلام (COD)" checked>
                     <span>الدفع عند الاستلام (COD)</span>
                 </label>
-                <label class="payment-option">
-                    <input type="radio" name="payMethod" value="دفع إلكتروني (بوابة الدفع)">
-                    <span>دفع إلكتروني (مدى / Apple Pay)</span>
-                </label>
+                <div style="margin-top: 10px; font-size: 12px; color: #d00; font-weight: bold;">
+                    * تنبيه: يجب إرفاق إيصال الدفع لتأكيد الطلب.
+                </div>
             </div>
 
             <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px; font-size: 18px;">
@@ -739,9 +744,10 @@
 
             const clientName = document.getElementById('custName').value.trim();
             const clientPhone = document.getElementById('custPhone').value.trim();
+            const deliveryDay = document.getElementById('deliveryDay').value;
 
-            if (!clientName || !clientPhone) {
-                alert('فضلاً، قم بكتابة اسمك ورقم هاتفك لتأكيد التوصيل والطلب.');
+            if (!clientName || !clientPhone || !deliveryDay) {
+                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم الاستلام لتأكيد الطلب.');
                 return;
             }
             
@@ -752,6 +758,7 @@
             let message = `*فاتورة طلب جديد من متجر VEL SWEETS*\n\n`;
             message += `*اسم العميل:* ${clientName}\n`;
             message += `*رقم العميل:* ${clientPhone}\n`;
+            message += `*يوم استلام الطلب:* ${deliveryDay}\n`;
             message += `*إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
             message += `----------------------------------\n`;
             message += `*تفاصيل الأصناف والعدد:*\n`;
@@ -763,16 +770,18 @@
             message += `----------------------------------\n`;
             message += `*المجموع الكلي الفاخر:* ${totalSum}\n`;
             message += `*طريقة السداد:* ${selectedMethod}\n\n`;
+            message += `*⚠️ تنبيه هام:* يجب إرفاق إيصال الدفع لتأكيد الطلب.\n\n`;
             message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للتوصيل الفوري.`;
             
             let whatsappUrl = `https://api.whatsapp.com/send?phone=96872557922&text=${encodeURIComponent(message)}`;
             
-            alert('شكراً لطلبك! سيتم الآن فتح الواتساب تلقائياً لتسليم الفاتورة الرسمية.');
+            alert('شكراً لطلبك! سيتم الآن فتح الواتساب تلقائياً لتسليم الفاتورة الرسمية. تذكر إرفاق إيصال الدفع.');
             window.open(whatsappUrl, '_blank');
             
             cart = [];
             document.getElementById('custName').value = "";
             document.getElementById('custPhone').value = "";
+            document.getElementById('deliveryDay').value = "";
             updateCartUI();
             toggleCart(false);
         }
