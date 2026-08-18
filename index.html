@@ -216,7 +216,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            margin-top: auto;
             padding-top: 15px;
             border-top: 1px solid var(--beige-light);
         }
@@ -287,8 +287,9 @@
         .cart-drawer {
             position: fixed;
             top: 0;
-            left: -400px;
-            width: 400px;
+            left: -420px;
+            width: 420px;
+            max-width: 100%;
             height: 100%;
             background-color: var(--white);
             box-shadow: 2px 0 15px rgba(0,0,0,0.1);
@@ -320,6 +321,65 @@
             border-bottom: 1px solid var(--beige-light);
         }
 
+        /* خيارات الإضافات (الشمعة وكود الخصم) في نهاية السلة */
+        .extra-addon-box {
+            background-color: var(--beige-light);
+            border: 1px dashed var(--burgundy);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .addon-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--burgundy);
+            cursor: pointer;
+        }
+
+        .addon-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .coupon-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .coupon-input-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--beige-dark);
+            border-radius: 4px;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .coupon-btn {
+            background-color: var(--burgundy);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .coupon-msg {
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
         /* صندوق معلومات العميل */
         .user-info-box {
             padding: 15px;
@@ -335,34 +395,13 @@
             margin-bottom: 10px;
         }
 
-        .user-info-box label {
-            font-size: 12px;
-            font-weight: bold;
-            display: block;
-            margin-bottom: 4px;
-        }
-
         .user-info-box input, .user-info-box select {
             width: 100%;
             padding: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             border: 1px solid var(--beige-dark);
             border-radius: 4px;
             font-size: 13px;
-        }
-
-        .day-display-badge {
-            background-color: var(--beige-dark);
-            color: var(--text-dark);
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 12px;
-            width: 100%;
-            text-align: center;
-            border: 1px solid rgba(0,0,0,0.05);
         }
 
         /* خيارات الدفع في السلة */
@@ -422,6 +461,7 @@
         <h2 class="section-title">قائمة الحلويات الفاخرة</h2>
         <div class="products-grid">
             
+            <!-- ترافل مانجو -->
             <div class="product-card" id="prod-mango">
                 <img src="mango.jpg" alt="ترافل مانجو" class="product-img">
                 <div class="product-info">
@@ -429,18 +469,18 @@
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
-                            <button class="option-btn active" onclick="selectSize('mango', 'صغير', 4)">صغير</button>
-                            <button class="option-btn" onclick="selectSize('mango', 'وسط', 6)">وسط</button>
+                            <button class="option-btn active" onclick="selectSize('mango', 'صغير', 5)">صغير</button>
                             <button class="option-btn" onclick="selectSize('mango', 'كبير', 12)">كبير</button>
                         </div>
                     </div>
                     <div class="price-row">
-                        <span class="product-price" id="mango-price">4 ر.ع</span>
+                        <span class="product-price" id="mango-price">5.000 ر.ع</span>
                         <button class="add-to-cart-btn" onclick="addToCart('ترافل مانجو', 'mango')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
 
+            <!-- تيرامسو -->
             <div class="product-card" id="prod-tiramisu">
                 <img src="trameso.jpg" alt="تيرامسو" class="product-img">
                 <div class="product-info">
@@ -448,18 +488,18 @@
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
-                            <button class="option-btn active" onclick="selectSize('tiramisu', 'صغير', 4)">صغير</button>
-                            <button class="option-btn" onclick="selectSize('tiramisu', 'وسط', 6)">وسط</button>
+                            <button class="option-btn active" onclick="selectSize('tiramisu', 'صغير', 5)">صغير</button>
                             <button class="option-btn" onclick="selectSize('tiramisu', 'كبير', 12)">كبير</button>
                         </div>
                     </div>
                     <div class="price-row">
-                        <span class="product-price" id="tiramisu-price">4 ر.ع</span>
+                        <span class="product-price" id="tiramisu-price">5.000 ر.ع</span>
                         <button class="add-to-cart-btn" onclick="addToCart('تيرامسو', 'tiramisu')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
 
+            <!-- بقلاوة تراميسو -->
             <div class="product-card" id="prod-baklava">
                 <img src="thecscake.PNG" alt="بقلاوة تراميسو" class="product-img">
                 <div class="product-info">
@@ -467,23 +507,61 @@
                     <div class="options-group">
                         <span class="options-label">اختر حجم الطبق:</span>
                         <div class="size-selector">
-                            <button class="option-btn active" onclick="selectSize('baklava', 'صغير', 4)">صغير</button>
-                            <button class="option-btn" onclick="selectSize('baklava', 'وسط', 6)">وسط</button>
+                            <button class="option-btn active" onclick="selectSize('baklava', 'صغير', 5)">صغير</button>
                             <button class="option-btn" onclick="selectSize('baklava', 'كبير', 12)">كبير</button>
                         </div>
                     </div>
                     <div class="price-row">
-                        <span class="product-price" id="baklava-price">4 ر.ع</span>
+                        <span class="product-price" id="baklava-price">5.000 ر.ع</span>
                         <button class="add-to-cart-btn" onclick="addToCart('بقلاوة تراميسو', 'baklava')">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- رافيلو كيك -->
+            <div class="product-card" id="prod-raffaello">
+                <img src="raffaello.jpg" alt="رافيلو كيك" class="product-img">
+                <div class="product-info">
+                    <h3>رافيلو كيك</h3>
+                    <div class="options-group">
+                        <span class="options-label">اختر حجم الطبق:</span>
+                        <div class="size-selector">
+                            <button class="option-btn active" onclick="selectSize('raffaello', 'صغير', 5)">صغير</button>
+                            <button class="option-btn" onclick="selectSize('raffaello', 'كبير', 12)">كبير</button>
+                        </div>
+                    </div>
+                    <div class="price-row">
+                        <span class="product-price" id="raffaello-price">5.000 ر.ع</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('رافيلو كيك', 'raffaello')">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بودينق كيك -->
+            <div class="product-card" id="prod-pudding">
+                <img src="pudding.jpg" alt="بودينق كيك" class="product-img">
+                <div class="product-info">
+                    <h3>بودينق كيك</h3>
+                    <div class="options-group">
+                        <span class="options-label">اختر حجم الطبق:</span>
+                        <div class="size-selector">
+                            <button class="option-btn active" onclick="selectSize('pudding', 'صغير', 5)">صغير</button>
+                            <button class="option-btn" onclick="selectSize('pudding', 'كبير', 12)">كبير</button>
+                        </div>
+                    </div>
+                    <div class="price-row">
+                        <span class="product-price" id="pudding-price">5.000 ر.ع</span>
+                        <button class="add-to-cart-btn" onclick="addToCart('بودينق كيك', 'pudding')">أضف للسلة</button>
                     </div>
                 </div>
             </div>
 
         </div>
 
+        <!-- بوكس الأصناف الثنائية -->
         <section class="custom-section">
             <h2 style="color: var(--burgundy); margin-bottom: 10px;">بوكس الأصناف الثنائية (الحجم الصغير)</h2>
-            <p>اختر صنفين فقط كحد أقصى من الأصناف الثلاثة الحجم الصغير للحصول على البوكس المجمع بقيمة 10 ر.ع.</p>
+            <p>اختر صنفين فقط كحد أقصى من الأصناف الحجم الصغير للحصول على البوكس المجمع بقيمة 10 ر.ع.</p>
             <div class="checkbox-group">
                 <label class="checkbox-label">
                     <input type="checkbox" class="box-choice" value="ترافل مانجو (صغير)" onchange="checkBoxLimit(this)">
@@ -497,13 +575,22 @@
                     <input type="checkbox" class="box-choice" value="بقلاوة تراميسو (صغير)" onchange="checkBoxLimit(this)">
                     <span>بقلاوة تراميسو (الحجم الصغير)</span>
                 </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="box-choice" value="رافيلو كيك (صغير)" onchange="checkBoxLimit(this)">
+                    <span>رافيلو كيك (الحجم الصغير)</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="box-choice" value="بودينق كيك (صغير)" onchange="checkBoxLimit(this)">
+                    <span>بودينق كيك (الحجم الصغير)</span>
+                </label>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                <div>سعر البوكس المجمع: <span style="font-size: 22px; font-weight: bold; color: var(--burgundy);">10 ر.ع</span></div>
+                <div>سعر البوكس المجمع: <span style="font-size: 22px; font-weight: bold; color: var(--burgundy);">10.000 ر.ع</span></div>
                 <button type="button" class="add-to-cart-btn" onclick="addCustomBoxToCart()">أضف البوكس للسلة</button>
             </div>
         </section>
 
+        <!-- حجز عربة المناسبات -->
         <section class="custom-section">
             <h2 style="color: var(--burgundy); margin-bottom: 10px;">حجز عربة التقديم للحفلات والمناسبات</h2>
             <p>أضف لمسة ضيافة راقية لمناسبتك بعربة مجهزة بالكامل (يجب اختيار صنفين أو 3 أصناف كحد أقصى).</p>
@@ -528,6 +615,14 @@
                             <span>بقلاوة تراميسو</span>
                         </label>
                         <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="رافيلو كيك" onchange="checkCateringLimit(this)">
+                            <span>رافيلو كيك</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="sweet-choice" value="بودينق كيك" onchange="checkCateringLimit(this)">
+                            <span>بودينق كيك</span>
+                        </label>
+                        <label class="checkbox-label">
                             <input type="checkbox" class="sweet-choice" value="تشيز كيك باشن" onchange="checkCateringLimit(this)">
                             <span>تشيز كيك باشن</span>
                         </label>
@@ -544,7 +639,7 @@
                     </div>
                 </div>
                 <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                    <div>السعر الكلي للعربة: <span id="cat-total-price" style="font-size: 22px; font-weight: bold; color: var(--burgundy);">0 ر.ع</span></div>
+                    <div>السعر الكلي للعربة: <span id="cat-total-price" style="font-size: 22px; font-weight: bold; color: var(--burgundy);">0.000 ر.ع</span></div>
                     <button type="submit" class="add-to-cart-btn">احجز العربة الآن</button>
                 </div>
             </form>
@@ -562,36 +657,55 @@
         </div>
         
         <div class="cart-footer">
+            <!-- قسم الإضافات الجانبية (الشمعة + كود الخصم) -->
+            <div class="extra-addon-box">
+                <label class="addon-label">
+                    <input type="checkbox" id="globalCandleCheck" onchange="updateCartUI()">
+                    <span>إضافة شمعة للطلب 🕯️ (+200 بيسة)</span>
+                </label>
+
+                <div>
+                    <span style="font-size: 13px; font-weight: bold; color: var(--burgundy); display: block; margin-bottom: 5px;">كود الخصم:</span>
+                    <div class="coupon-input-group">
+                        <input type="text" id="couponCodeInput" placeholder="أدخل كود الخصم (مثال: VEL)">
+                        <button type="button" class="coupon-btn" onclick="applyDiscountCoupon()">تطبيق</button>
+                    </div>
+                    <div id="couponMsg" class="coupon-msg"></div>
+                </div>
+            </div>
+
             <div class="user-info-box">
                 <h4>بيانات العميل (مطلوب للتوصيل):</h4>
-                <label for="custName">الاسم الكامل:</label>
                 <input type="text" id="custName" placeholder="اسم العميل الكامل" required>
-                
-                <label for="custPhone">رقم الواتساب:</label>
                 <input type="tel" id="custPhone" placeholder="رقم الهاتف (واتساب)" required>
-                
-                <label for="deliveryDate">اختر تاريخ استلام الطلب (الأحد، الإثنين، الثلاثاء فقط):</label>
-                <input type="date" id="deliveryDate" onchange="validateAndGetDay(this.value)" required>
-                
-                <div id="dayDisplay" class="day-display-badge" style="display: none;">اليوم المحدد: لم يتم تحديد تاريخ بعد</div>
+                <select id="deliveryDay" required>
+                    <option value="" disabled selected>اختر يوم استلام الطلب</option>
+                    <option value="الأحد">الأحد</option>
+                    <option value="الإثنين">الإثنين</option>
+                    <option value="الثلاثاء">الثلاثاء</option>
+                </select>
             </div>
 
             <div class="payment-methods-box">
-                <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">طريقة الدفع:</span>
+                <span style="font-weight: bold; font-size: 14px; color: var(--burgundy);">اختر طريقة الدفع:</span>
                 <label class="payment-option">
-                    <input type="radio" name="payMethod" value="التحويل البنكي المسبق" checked>
-                    <span>تحويل بنكي مسبق</span>
+                    <input type="radio" name="payMethod" value="الدفع عند الاستلام (COD)" checked>
+                    <span>الدفع عند الاستلام (COD)</span>
                 </label>
-                <div style="margin-top: 10px; font-size: 12px; color: #b01025; font-weight: bold; line-height: 1.4;">
-                    * ملاحظة: يتم التحويل مباشرة عن طريق الرقم المرتبط بالواتساب الحالي الذي تتواصل معه، ويجب إرفاق إيصال الدفع لتأكيد طلبكم.
+                <label class="payment-option">
+                    <input type="radio" name="payMethod" value="دفع إلكتروني (بوابة الدفع)">
+                    <span>دفع إلكتروني (مدى / Apple Pay)</span>
+                </label>
+                <div style="margin-top: 10px; font-size: 12px; color: #d00; font-weight: bold;">
+                    * تنبيه: يجب إرفاق إيصال الدفع لتأكيد الطلب.
                 </div>
             </div>
 
             <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px; font-size: 18px;">
-                <span>المجموع:</span>
-                <span id="cartTotalSum">0 ر.ع</span>
+                <span>المجموع الكلي:</span>
+                <span id="cartTotalSum">0.000 ر.ع</span>
             </div>
-            <button class="checkout-btn" onclick="processCheckout()">تأكيد وإتمام الطلب</button>
+            <button class="checkout-btn" onclick="processCheckout()">تأكيد وإتمام الطلب عبر الواتساب</button>
         </div>
     </div>
 
@@ -601,12 +715,21 @@
 
     <script>
         let cart = [];
-        let state = {
-            mango: { size: 'صغير', price: 4 },
-            tiramisu: { size: 'صغير', price: 4 },
-            baklava: { size: 'صغير', price: 4 }
+        let appliedDiscountRate = 0; 
+        let activeCouponCode = "";   
+
+        // قائمة أكواد الخصم المفعلة
+        const validCoupons = {
+            'VEL': 0.10 // كود الخصم الأساسي باسم VEL وبنسبة 10%
         };
-        let detectedDayName = ""; // لتخزين اليوم المكتشف برمجياً
+
+        let state = {
+            mango: { size: 'صغير', price: 5 },
+            tiramisu: { size: 'صغير', price: 5 },
+            baklava: { size: 'صغير', price: 5 },
+            raffaello: { size: 'صغير', price: 5 },
+            pudding: { size: 'صغير', price: 5 }
+        };
 
         function selectSize(prod, size, price) {
             state[prod].size = size;
@@ -623,37 +746,7 @@
                 }
             });
             
-            document.getElementById(`${prod}-price`).textContent = `${price} ر.ع`;
-        }
-
-        function validateAndGetDay(dateString) {
-            const dayDisplay = document.getElementById('dayDisplay');
-            if (!dateString) {
-                dayDisplay.style.display = "none";
-                detectedDayName = "";
-                return;
-            }
-
-            const dateObj = new Date(dateString);
-            const daysOfWeek = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            const dayName = daysOfWeek[dateObj.getDay()];
-
-            // التحقق من الأيام المتاحة فقط (الأحد، الإثنين، الثلاثاء)
-            if (dayName === 'الأحد' || dayName === 'الإثنين' || dayName === 'الثلاثاء') {
-                detectedDayName = dayName;
-                dayDisplay.style.display = "inline-block";
-                dayDisplay.textContent = `اليوم المكتشف: ${dayName}`;
-                dayDisplay.style.color = "var(--text-dark)";
-                dayDisplay.style.backgroundColor = "var(--beige-dark)";
-            } else {
-                alert('تنبيه: الطلب متاح فقط أيام (الأحد، الإثنين، الثلاثاء). يرجى اختيار تاريخ مناسب لهذه الأيام.');
-                document.getElementById('deliveryDate').value = "";
-                dayDisplay.style.display = "inline-block";
-                dayDisplay.textContent = `عذراً، يوم (${dayName}) غير متاح للطلب!`;
-                dayDisplay.style.color = "#white";
-                dayDisplay.style.backgroundColor = "#ffdddd";
-                detectedDayName = "";
-            }
+            document.getElementById(`${prod}-price`).textContent = `${price.toFixed(3)} ر.ع`;
         }
 
         function checkBoxLimit(element) {
@@ -676,7 +769,7 @@
             cart.push({
                 name: 'بوكس الأصناف الثنائية',
                 details: `المكونات: ${items} | الحجم: صغير`,
-                price: 10,
+                price: 10.000,
                 qty: 1
             });
             
@@ -720,17 +813,18 @@
 
         function updateCateringPrice() {
             const calc = getCateringCalculation();
-            document.getElementById('cat-total-price').textContent = `${calc.total} ر.ع`;
+            document.getElementById('cat-total-price').textContent = `${calc.total.toFixed(3)} ر.ع`;
         }
 
         function addToCart(name, key) {
+            let itemPrice = state[key].price;
             let details = `طبق حجم (${state[key].size})`;
             
             let existingItem = cart.find(item => item.name === name && item.details === details);
             if(existingItem) {
                 existingItem.qty += 1;
             } else {
-                cart.push({ name: name, details: details, price: state[key].price, qty: 1 });
+                cart.push({ name: name, details: details, price: itemPrice, qty: 1 });
             }
             
             updateCartUI();
@@ -761,7 +855,7 @@
             
             document.querySelectorAll('.sweet-choice').forEach(cb => cb.checked = false);
             document.getElementById('cat-staff').checked = false;
-            document.getElementById('cat-total-price').textContent = "0 ر.ع";
+            document.getElementById('cat-total-price').textContent = "0.000 ر.ع";
         }
 
         function toggleCart(open) {
@@ -769,24 +863,74 @@
             document.getElementById('cartOverlay').classList.toggle('show', open);
         }
 
+        function applyDiscountCoupon() {
+            const input = document.getElementById('couponCodeInput').value.trim().toUpperCase();
+            const msgDiv = document.getElementById('couponMsg');
+
+            if (!input) {
+                msgDiv.style.color = 'red';
+                msgDiv.textContent = 'يرجى إدخال الكود أولاً.';
+                return;
+            }
+
+            if (validCoupons[input]) {
+                appliedDiscountRate = validCoupons[input];
+                activeCouponCode = input;
+                msgDiv.style.color = 'green';
+                msgDiv.textContent = `تم تطبيق الخصم (${appliedDiscountRate * 100}%) بنجاح!`;
+                updateCartUI();
+            } else {
+                appliedDiscountRate = 0;
+                activeCouponCode = "";
+                msgDiv.style.color = 'red';
+                msgDiv.textContent = 'كود الخصم غير صحيح أو منتهي الصلاحية.';
+                updateCartUI();
+            }
+        }
+
         function updateCartUI() {
             document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
             const list = document.getElementById('cartItemsList');
+            
             if(cart.length === 0) {
                 list.innerHTML = `<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>`;
-                document.getElementById('cartTotalSum').textContent = "0 ر.ع";
+                document.getElementById('cartTotalSum').textContent = "0.000 ر.ع";
                 return;
             }
-            let html = ""; let total = 0;
+            
+            let html = ""; 
+            let itemsTotal = 0;
+
             cart.forEach((item, index) => {
-                total += (item.price * item.qty);
+                let lineTotal = item.price * item.qty;
+                itemsTotal += lineTotal;
                 html += `<div class="cart-item">
-                    <div><h4>${item.name} (${item.qty} حبة)</h4><small>${item.details}</small><br><strong>${item.price * item.qty} ر.ع</strong></div>
+                    <div>
+                        <h4>${item.name} (${item.qty} حبة)</h4>
+                        <small>${item.details}</small><br>
+                        <strong>${lineTotal.toFixed(3)} ر.ع</strong>
+                    </div>
                     <button style="color:red; background:none; border:none; cursor:pointer;" onclick="cart.splice(${index},1); updateCartUI();">حذف</button>
                 </div>`;
             });
+            
+            let finalTotal = itemsTotal;
+
+            // احتساب الخصم إن وجد
+            let discountAmount = 0;
+            if (appliedDiscountRate > 0) {
+                discountAmount = itemsTotal * appliedDiscountRate;
+                finalTotal -= discountAmount;
+            }
+
+            // إضافة سعر الشمعة إذا تم اختيار الخيار
+            const addCandle = document.getElementById('globalCandleCheck').checked;
+            if (addCandle) {
+                finalTotal += 0.200;
+            }
+
             list.innerHTML = html;
-            document.getElementById('cartTotalSum').textContent = `${total} ر.ع`;
+            document.getElementById('cartTotalSum').textContent = `${finalTotal.toFixed(3)} ر.ع`;
         }
 
         function processCheckout() {
@@ -797,50 +941,48 @@
 
             const clientName = document.getElementById('custName').value.trim();
             const clientPhone = document.getElementById('custPhone').value.trim();
-            const deliveryDate = document.getElementById('deliveryDate').value;
-            const storeWhatsappNumber = "96872557922";
+            const deliveryDay = document.getElementById('deliveryDay').value;
+            const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+            const hasCandle = document.getElementById('globalCandleCheck').checked;
 
-            if (!clientName || !clientPhone || !deliveryDate || !detectedDayName) {
-                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار تاريخ استلام صحيح (الأحد، الإثنين، الثلاثاء) لتأكيد الطلب.');
+            if (!clientName || !clientPhone || !deliveryDay) {
+                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم الاستلام لتأكيد الطلب.');
                 return;
             }
-            
-            const selectedMethod = document.querySelector('input[name="payMethod"]:checked').value;
-            let totalSum = document.getElementById('cartTotalSum').textContent;
-            let totalItemsCount = cart.reduce((sum, item) => sum + item.qty, 0);
-            
-            let message = `*فاتورة طلب جديد من متجر VEL SWEETS*\n\n`;
-            message += `*اسم العميل:* ${clientName}\n`;
-            message += `*رقم العميل:* ${clientPhone}\n`;
-            message += `*يوم وتاريخ استلام الطلب:* ${detectedDayName} (${deliveryDate})\n`;
-            message += `*إجمالي عدد القطع:* ${totalItemsCount} أصناف\n`;
-            message += `----------------------------------\n`;
-            message += `*تفاصيل الأصناف والعدد:*\n`;
-            
-            cart.forEach((item, index) => {
-                message += `${index + 1}. [العدد: ${item.qty}] - ${item.name} - ${item.details} (${item.price * item.qty} ر.ع)\n`;
+
+            let orderSummary = `*طلب جديد من متجر VEL*\n\n`;
+            orderSummary += `*اسم العميل:* ${clientName}\n`;
+            orderSummary += `*رقم الهاتف:* ${clientPhone}\n`;
+            orderSummary += `*يوم الاستلام:* ${deliveryDay}\n`;
+            orderSummary += `*طريقة الدفع:* ${payMethod}\n\n`;
+            orderSummary += `*الطلبات:*\n`;
+
+            let itemsTotal = 0;
+            cart.forEach((item, i) => {
+                let itemTotal = item.price * item.qty;
+                itemsTotal += itemTotal;
+                orderSummary += `${i + 1}. ${item.name} (${item.qty} حبة) - ${item.details} [${itemTotal.toFixed(3)} ر.ع]\n`;
             });
+
+            let finalTotal = itemsTotal;
+
+            if (appliedDiscountRate > 0) {
+                let discountAmount = itemsTotal * appliedDiscountRate;
+                finalTotal -= discountAmount;
+                orderSummary += `\n*كود الخصم:* ${activeCouponCode} (خصم ${appliedDiscountRate * 100}% = -${discountAmount.toFixed(3)} ر.ع)\n`;
+            }
+
+            if (hasCandle) {
+                finalTotal += 0.200;
+                orderSummary += `*الإضافات:* إضافة شمعة 🕯️ (+0.200 ر.ع)\n`;
+            }
+
+            orderSummary += `\n*المجموع الكلي:* ${finalTotal.toFixed(3)} ر.ع`;
+
+            const encodedMessage = encodeURIComponent(orderSummary);
+            const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
             
-            message += `----------------------------------\n`;
-            message += `*المجموع الكلي الفاخر:* ${totalSum}\n`;
-            message += `*طريقة السداد:* ${selectedMethod}\n`;
-            message += `*حساب التحويل:* يتم التحويل مباشرة إلى الرقم المرتبط بالواتساب الحالي الذي تتواصل معه الآن.\n\n`;
-            message += `*⚠️ تنبيه هام جدًا:* يرجى إرفاق صورة إيصال التحويل البنكي هنا في هذه المحادثة مباشرةً بعد إرسال الرسالة لتأكيد طلبكم وبدء التجهيز.\n\n`;
-            message += `يرجى مراجعة وتأكيد الفاتورة وتجهيز الطلب للاستلام الفوري.`;
-            
-            let whatsappUrl = `https://api.whatsapp.com/send?phone=${storeWhatsappNumber}&text=${encodeURIComponent(message)}`;
-            
-            alert('شكراً لطلبك! سيتم فتح الواتساب الآن تلقائياً لتسليم الفاتورة. يرجى إرسال الفاتورة ثم إرفاق إيصال التحويل البنكي لنفس رقم المحادثة.');
             window.open(whatsappUrl, '_blank');
-            
-            cart = [];
-            document.getElementById('custName').value = "";
-            document.getElementById('custPhone').value = "";
-            document.getElementById('deliveryDate').value = "";
-            document.getElementById('dayDisplay').style.display = "none";
-            detectedDayName = "";
-            updateCartUI();
-            toggleCart(false);
         }
     </script>
 </body>
