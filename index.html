@@ -657,7 +657,7 @@
         </div>
         
         <div class="cart-footer">
-            <!-- قسم الإضافات الجانبية (الشمعة + كود الخصم) -->
+            <!-- قسم الإضافات الجانبية (الشمعة وكود الخصم) -->
             <div class="extra-addon-box">
                 <label class="addon-label">
                     <input type="checkbox" id="globalCandleCheck" onchange="updateCartUI()">
@@ -667,7 +667,7 @@
                 <div>
                     <span style="font-size: 13px; font-weight: bold; color: var(--burgundy); display: block; margin-bottom: 5px;">كود الخصم:</span>
                     <div class="coupon-input-group">
-                        <input type="text" id="couponCodeInput" placeholder="أدخل كود الخصم (مثال: VEL)">
+                        <input type="text" id="couponCodeInput" placeholder="أدخل كود الخصم (VEL)">
                         <button type="button" class="coupon-btn" onclick="applyDiscountCoupon()">تطبيق</button>
                     </div>
                     <div id="couponMsg" class="coupon-msg"></div>
@@ -718,10 +718,13 @@
         let appliedDiscountRate = 0; 
         let activeCouponCode = "";   
 
-        // قائمة أكواد الخصم المفعلة
         const validCoupons = {
-            'VEL': 0.10 // كود الخصم الأساسي باسم VEL وبنسبة 10%
+            'VEL': 0.10 // نسبة الخصم 10%
         };
+
+        // العدادات لحفظ استخدام الخصم (أول 3 طلبات أصناف / أول 3 طلبات عربة)
+        let itemsDiscountCount = parseInt(localStorage.getItem('vel_items_discount_count')) || 0;
+        let cateringDiscountCount = parseInt(localStorage.getItem('vel_catering_discount_count')) || 0;
 
         let state = {
             mango: { size: 'صغير', price: 5 },
@@ -767,6 +770,7 @@
             const items = Array.from(checkedBoxes).map(cb => cb.value).join(' و ');
             
             cart.push({
+                type: 'item',
                 name: 'بوكس الأصناف الثنائية',
                 details: `المكونات: ${items} | الحجم: صغير`,
                 price: 10.000,
@@ -824,7 +828,7 @@
             if(existingItem) {
                 existingItem.qty += 1;
             } else {
-                cart.push({ name: name, details: details, price: itemPrice, qty: 1 });
+                cart.push({ type: 'item', name: name, details: details, price: itemPrice, qty: 1 });
             }
             
             updateCartUI();
@@ -844,6 +848,7 @@
             const itemsListText = calc.selectedItems.join(' و ');
             
             cart.push({ 
+                type: 'catering',
                 name: 'حجز عربة مناسبات', 
                 details: `التاريخ: ${date} | الأصناف المحددة: ${calc.count} أصناف (${itemsListText}) | ${staffText}`, 
                 price: calc.total, 
@@ -874,16 +879,38 @@
             }
 
             if (validCoupons[input]) {
-                appliedDiscountRate = validCoupons[input];
-                activeCouponCode = input;
-                msgDiv.style.color = 'green';
-                msgDiv.textContent = `تم تطبيق الخصم (${appliedDiscountRate * 100}%) بنجاح!`;
-                updateCartUI();
+                const hasItems = cart.some(item => item.type === 'item');
+                const hasCatering = cart.some(item => item.type === 'catering');
+
+                let eligible = false;
+                let errorReason = "";
+
+                if (hasItems && itemsDiscountCount >= 3) {
+                    errorReason = "انتهى عدد مرات استخدام الخصم المتاحة للأصناف (أول 3 طلبات فقط).";
+                } else if (hasCatering && cateringDiscountCount >= 3) {
+                    errorReason = "انتهى عدد مرات استخدام الخصم المتاحة لعربة المناسبات (أول 3 طلبات فقط).";
+                } else {
+                    eligible = true;
+                }
+
+                if (eligible) {
+                    appliedDiscountRate = validCoupons[input];
+                    activeCouponCode = input;
+                    msgDiv.style.color = 'green';
+                    msgDiv.textContent = `تم تطبيق الخصم (${appliedDiscountRate * 100}%) بنجاح!`;
+                    updateCartUI();
+                } else {
+                    appliedDiscountRate = 0;
+                    activeCouponCode = "";
+                    msgDiv.style.color = 'red';
+                    msgDiv.textContent = errorReason;
+                    updateCartUI();
+                }
             } else {
                 appliedDiscountRate = 0;
                 activeCouponCode = "";
                 msgDiv.style.color = 'red';
-                msgDiv.textContent = 'كود الخصم غير صحيح أو منتهي الصلاحية.';
+                msgDiv.textContent = 'كود الخصم غير صحيح أو غير مفعل.';
                 updateCartUI();
             }
         }
@@ -916,14 +943,14 @@
             
             let finalTotal = itemsTotal;
 
-            // احتساب الخصم إن وجد
+            // احتساب الخصم
             let discountAmount = 0;
             if (appliedDiscountRate > 0) {
                 discountAmount = itemsTotal * appliedDiscountRate;
                 finalTotal -= discountAmount;
             }
 
-            // إضافة سعر الشمعة إذا تم اختيار الخيار
+            // إضافة سعر الشمعة
             const addCandle = document.getElementById('globalCandleCheck').checked;
             if (addCandle) {
                 finalTotal += 0.200;
@@ -948,6 +975,21 @@
             if (!clientName || !clientPhone || !deliveryDay) {
                 alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم الاستلام لتأكيد الطلب.');
                 return;
+            }
+
+            // زيادة العداد وتخزينه عند إتمام الطلب إذا استخدم كود الخصم
+            if (appliedDiscountRate > 0) {
+                const hasItems = cart.some(item => item.type === 'item');
+                const hasCatering = cart.some(item => item.type === 'catering');
+
+                if (hasItems) {
+                    itemsDiscountCount++;
+                    localStorage.setItem('vel_items_discount_count', itemsDiscountCount);
+                }
+                if (hasCatering) {
+                    cateringDiscountCount++;
+                    localStorage.setItem('vel_catering_discount_count', cateringDiscountCount);
+                }
             }
 
             let orderSummary = `*طلب جديد من متجر VEL*\n\n`;
