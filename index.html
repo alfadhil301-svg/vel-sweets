@@ -321,7 +321,7 @@
             border-bottom: 1px solid var(--beige-light);
         }
 
-        /* خيارات الإضافات (الشمعة وكود الخصم) في نهاية السلة */
+        /* خيار الشمعة في نهاية السلة */
         .extra-addon-box {
             background-color: var(--beige-light);
             border: 1px dashed var(--burgundy);
@@ -347,37 +347,6 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
-        }
-
-        .coupon-input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .coupon-input-group input {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid var(--beige-dark);
-            border-radius: 4px;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
-
-        .coupon-btn {
-            background-color: var(--burgundy);
-            color: var(--white);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        .coupon-msg {
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 2px;
         }
 
         /* صندوق معلومات العميل */
@@ -657,21 +626,12 @@
         </div>
         
         <div class="cart-footer">
-            <!-- قسم الإضافات الجانبية (الشمعة وكود الخصم) -->
+            <!-- خيار الشمعة فقط -->
             <div class="extra-addon-box">
                 <label class="addon-label">
                     <input type="checkbox" id="globalCandleCheck" onchange="updateCartUI()">
                     <span>إضافة شمعة للطلب 🕯️ (+200 بيسة)</span>
                 </label>
-
-                <div>
-                    <span style="font-size: 13px; font-weight: bold; color: var(--burgundy); display: block; margin-bottom: 5px;">كود الخصم:</span>
-                    <div class="coupon-input-group">
-                        <input type="text" id="couponCodeInput" placeholder="أدخل كود الخصم (VEL)">
-                        <button type="button" class="coupon-btn" onclick="applyDiscountCoupon()">تطبيق</button>
-                    </div>
-                    <div id="couponMsg" class="coupon-msg"></div>
-                </div>
             </div>
 
             <div class="user-info-box">
@@ -715,16 +675,6 @@
 
     <script>
         let cart = [];
-        let appliedDiscountRate = 0; 
-        let activeCouponCode = "";   
-
-        const validCoupons = {
-            'VEL': 0.10 // نسبة الخصم 10%
-        };
-
-        // العدادات لحفظ استخدام الخصم (أول 3 طلبات أصناف / أول 3 طلبات عربة)
-        let itemsDiscountCount = parseInt(localStorage.getItem('vel_items_discount_count')) || 0;
-        let cateringDiscountCount = parseInt(localStorage.getItem('vel_catering_discount_count')) || 0;
 
         let state = {
             mango: { size: 'صغير', price: 5 },
@@ -770,7 +720,6 @@
             const items = Array.from(checkedBoxes).map(cb => cb.value).join(' و ');
             
             cart.push({
-                type: 'item',
                 name: 'بوكس الأصناف الثنائية',
                 details: `المكونات: ${items} | الحجم: صغير`,
                 price: 10.000,
@@ -828,7 +777,7 @@
             if(existingItem) {
                 existingItem.qty += 1;
             } else {
-                cart.push({ type: 'item', name: name, details: details, price: itemPrice, qty: 1 });
+                cart.push({ name: name, details: details, price: itemPrice, qty: 1 });
             }
             
             updateCartUI();
@@ -848,7 +797,6 @@
             const itemsListText = calc.selectedItems.join(' و ');
             
             cart.push({ 
-                type: 'catering',
                 name: 'حجز عربة مناسبات', 
                 details: `التاريخ: ${date} | الأصناف المحددة: ${calc.count} أصناف (${itemsListText}) | ${staffText}`, 
                 price: calc.total, 
@@ -857,173 +805,118 @@
             
             updateCartUI();
             toggleCart(true);
-            
-            document.querySelectorAll('.sweet-choice').forEach(cb => cb.checked = false);
-            document.getElementById('cat-staff').checked = false;
-            document.getElementById('cat-total-price').textContent = "0.000 ر.ع";
         }
 
         function toggleCart(open) {
-            document.getElementById('cartDrawer').classList.toggle('open', open);
-            document.getElementById('cartOverlay').classList.toggle('show', open);
-        }
-
-        function applyDiscountCoupon() {
-            const input = document.getElementById('couponCodeInput').value.trim().toUpperCase();
-            const msgDiv = document.getElementById('couponMsg');
-
-            if (!input) {
-                msgDiv.style.color = 'red';
-                msgDiv.textContent = 'يرجى إدخال الكود أولاً.';
-                return;
-            }
-
-            if (validCoupons[input]) {
-                const hasItems = cart.some(item => item.type === 'item');
-                const hasCatering = cart.some(item => item.type === 'catering');
-
-                let eligible = false;
-                let errorReason = "";
-
-                if (hasItems && itemsDiscountCount >= 3) {
-                    errorReason = "انتهى عدد مرات استخدام الخصم المتاحة للأصناف (أول 3 طلبات فقط).";
-                } else if (hasCatering && cateringDiscountCount >= 3) {
-                    errorReason = "انتهى عدد مرات استخدام الخصم المتاحة لعربة المناسبات (أول 3 طلبات فقط).";
-                } else {
-                    eligible = true;
-                }
-
-                if (eligible) {
-                    appliedDiscountRate = validCoupons[input];
-                    activeCouponCode = input;
-                    msgDiv.style.color = 'green';
-                    msgDiv.textContent = `تم تطبيق الخصم (${appliedDiscountRate * 100}%) بنجاح!`;
-                    updateCartUI();
-                } else {
-                    appliedDiscountRate = 0;
-                    activeCouponCode = "";
-                    msgDiv.style.color = 'red';
-                    msgDiv.textContent = errorReason;
-                    updateCartUI();
-                }
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('cartOverlay');
+            if(open) {
+                drawer.classList.add('open');
+                overlay.classList.add('show');
             } else {
-                appliedDiscountRate = 0;
-                activeCouponCode = "";
-                msgDiv.style.color = 'red';
-                msgDiv.textContent = 'كود الخصم غير صحيح أو غير مفعل.';
-                updateCartUI();
+                drawer.classList.remove('open');
+                overlay.classList.remove('show');
             }
         }
 
         function updateCartUI() {
-            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
-            const list = document.getElementById('cartItemsList');
+            const itemsList = document.getElementById('cartItemsList');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotalSum = document.getElementById('cartTotalSum');
+            
+            let totalCount = 0;
+            let subtotal = 0;
             
             if(cart.length === 0) {
-                list.innerHTML = `<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>`;
-                document.getElementById('cartTotalSum').textContent = "0.000 ر.ع";
+                itemsList.innerHTML = '<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>';
+                cartCount.textContent = '0';
+                cartTotalSum.textContent = '0.000 ر.ع';
                 return;
             }
             
-            let html = ""; 
-            let itemsTotal = 0;
-
+            itemsList.innerHTML = '';
             cart.forEach((item, index) => {
-                let lineTotal = item.price * item.qty;
-                itemsTotal += lineTotal;
-                html += `<div class="cart-item">
-                    <div>
-                        <h4>${item.name} (${item.qty} حبة)</h4>
-                        <small>${item.details}</small><br>
-                        <strong>${lineTotal.toFixed(3)} ر.ع</strong>
+                totalCount += item.qty;
+                let itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+                
+                itemsList.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <h4 style="font-size: 15px; color: var(--burgundy);">${item.name}</h4>
+                            <p style="font-size: 12px; color: #666; margin: 3px 0;">${item.details}</p>
+                            <p style="font-size: 13px; font-weight: bold;">${item.price.toFixed(3)} ر.ع × ${item.qty}</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button onclick="changeQty(${index}, 1)" style="padding: 2px 8px; background: var(--beige-dark); border:none; cursor:pointer; font-weight:bold;">+</button>
+                            <span>${item.qty}</span>
+                            <button onclick="changeQty(${index}, -1)" style="padding: 2px 8px; background: var(--beige-dark); border:none; cursor:pointer; font-weight:bold;">-</button>
+                            <button onclick="removeItem(${index})" style="background:none; border:none; color:#d00; cursor:pointer; font-size:16px; margin-right:5px;">&times;</button>
+                        </div>
                     </div>
-                    <button style="color:red; background:none; border:none; cursor:pointer;" onclick="cart.splice(${index},1); updateCartUI();">حذف</button>
-                </div>`;
+                `;
             });
             
-            let finalTotal = itemsTotal;
-
-            // احتساب الخصم
-            let discountAmount = 0;
-            if (appliedDiscountRate > 0) {
-                discountAmount = itemsTotal * appliedDiscountRate;
-                finalTotal -= discountAmount;
+            // إضافة سعر الشمعة إن كانت مفعلة
+            const candleChecked = document.getElementById('globalCandleCheck').checked;
+            if(candleChecked) {
+                subtotal += 0.200;
             }
+            
+            cartCount.textContent = totalCount;
+            cartTotalSum.textContent = `${subtotal.toFixed(3)} ر.ع`;
+        }
 
-            // إضافة سعر الشمعة
-            const addCandle = document.getElementById('globalCandleCheck').checked;
-            if (addCandle) {
-                finalTotal += 0.200;
+        function changeQty(index, change) {
+            cart[index].qty += change;
+            if(cart[index].qty <= 0) {
+                cart.splice(index, 1);
             }
+            updateCartUI();
+        }
 
-            list.innerHTML = html;
-            document.getElementById('cartTotalSum').textContent = `${finalTotal.toFixed(3)} ر.ع`;
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
         }
 
         function processCheckout() {
-            if (cart.length === 0) {
-                alert('سلتك فارغة! أضف بعض الحلويات أولاً.');
-                return;
-            }
-
-            const clientName = document.getElementById('custName').value.trim();
-            const clientPhone = document.getElementById('custPhone').value.trim();
-            const deliveryDay = document.getElementById('deliveryDay').value;
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const day = document.getElementById('deliveryDay').value;
             const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
-            const hasCandle = document.getElementById('globalCandleCheck').checked;
-
-            if (!clientName || !clientPhone || !deliveryDay) {
-                alert('فضلاً، قم بكتابة اسمك، رقم هاتفك، واختيار يوم الاستلام لتأكيد الطلب.');
+            
+            if(!name || !phone || !day) {
+                alert('فضلاً، أكمل بيانات العميل واسترطادات التوصيل قبل تأكيد الطلب.');
                 return;
             }
-
-            // زيادة العداد وتخزينه عند إتمام الطلب إذا استخدم كود الخصم
-            if (appliedDiscountRate > 0) {
-                const hasItems = cart.some(item => item.type === 'item');
-                const hasCatering = cart.some(item => item.type === 'catering');
-
-                if (hasItems) {
-                    itemsDiscountCount++;
-                    localStorage.setItem('vel_items_discount_count', itemsDiscountCount);
-                }
-                if (hasCatering) {
-                    cateringDiscountCount++;
-                    localStorage.setItem('vel_catering_discount_count', cateringDiscountCount);
-                }
-            }
-
-            let orderSummary = `*طلب جديد من متجر VEL*\n\n`;
-            orderSummary += `*اسم العميل:* ${clientName}\n`;
-            orderSummary += `*رقم الهاتف:* ${clientPhone}\n`;
-            orderSummary += `*يوم الاستلام:* ${deliveryDay}\n`;
-            orderSummary += `*طريقة الدفع:* ${payMethod}\n\n`;
-            orderSummary += `*الطلبات:*\n`;
-
-            let itemsTotal = 0;
-            cart.forEach((item, i) => {
-                let itemTotal = item.price * item.qty;
-                itemsTotal += itemTotal;
-                orderSummary += `${i + 1}. ${item.name} (${item.qty} حبة) - ${item.details} [${itemTotal.toFixed(3)} ر.ع]\n`;
-            });
-
-            let finalTotal = itemsTotal;
-
-            if (appliedDiscountRate > 0) {
-                let discountAmount = itemsTotal * appliedDiscountRate;
-                finalTotal -= discountAmount;
-                orderSummary += `\n*كود الخصم:* ${activeCouponCode} (خصم ${appliedDiscountRate * 100}% = -${discountAmount.toFixed(3)} ر.ع)\n`;
-            }
-
-            if (hasCandle) {
-                finalTotal += 0.200;
-                orderSummary += `*الإضافات:* إضافة شمعة 🕯️ (+0.200 ر.ع)\n`;
-            }
-
-            orderSummary += `\n*المجموع الكلي:* ${finalTotal.toFixed(3)} ر.ع`;
-
-            const encodedMessage = encodeURIComponent(orderSummary);
-            const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
             
+            if(cart.length === 0) {
+                alert('سلة التسوق فارغة.');
+                return;
+            }
+            
+            let message = `*طلب جديد من متجر VEL الفاخر* 🍰\n\n`;
+            message += `👤 *اسم العميل:* ${name}\n`;
+            message += `📞 *رقم الهاتف:* ${phone}\n`;
+            message += `📅 *يوم الاستلام:* ${day}\n`;
+            message += `💳 *طريقة الدفع:* ${payMethod}\n\n`;
+            message += `🛒 *تفاصيل الطلب:*\n`;
+            
+            cart.forEach((item, idx) => {
+                message += `${idx + 1}. ${item.name} (${item.details}) - الكمية: ${item.qty} - السعر: ${(item.price * item.qty).toFixed(3)} ر.ع\n`;
+            });
+            
+            const candleChecked = document.getElementById('globalCandleCheck').checked;
+            if(candleChecked) {
+                message += `🕯️ إضافة شمعة للطلب (+0.200 ر.ع)\n`;
+            }
+            
+            message += `\n💰 *المجموع الكلي:* ${document.getElementById('cartTotalSum').textContent}`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            // رقم الواتساب الافتراضي للتجربة أو يمكن تعديله حسب رقم المتجر
+            const whatsappUrl = `https://wa.me/96800000000?text=${encodedMessage}`;
             window.open(whatsappUrl, '_blank');
         }
     </script>
