@@ -27,6 +27,16 @@
             line-height: 1.6;
         }
 
+        /* تنبيه حالة الطلب (مفتوح/مغلق) */
+        .store-status-banner {
+            background-color: var(--burgundy);
+            color: var(--white);
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
         /* القائمة العلوية والتنقل */
         header {
             background-color: var(--white);
@@ -172,8 +182,15 @@
 
         .product-info h3 {
             font-size: 22px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--burgundy);
+        }
+
+        .product-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
         }
 
         .options-group {
@@ -185,12 +202,13 @@
             font-weight: bold;
             margin-bottom: 8px;
             display: block;
+            color: var(--text-dark);
         }
 
         .size-selector {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .option-btn {
@@ -210,6 +228,32 @@
             background-color: var(--burgundy);
             color: var(--white);
             border-color: var(--burgundy);
+        }
+
+        .checkbox-group-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--beige-light);
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--beige-dark);
+            margin-bottom: 12px;
+        }
+
+        .checkbox-label-mini {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .checkbox-label-mini input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
         }
 
         .price-row {
@@ -235,6 +279,21 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: var(--burgundy-hover);
+        }
+
+        /* كرت Velvet Cups المنفرد في الأسفل */
+        .featured-velvet-container {
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+        }
+
+        .product-card.featured-card .product-img {
+            height: 320px;
         }
 
         /* قسم بوكس صنفين وقسم عربة الحفلات */
@@ -409,6 +468,10 @@
 </head>
 <body>
 
+    <div class="store-status-banner" id="storeStatusBanner">
+        🔔 تنبيه: الطلبات متاحة حصرياً في عطلة نهاية الأسبوع (الخميس، الجمعة، السبت).
+    </div>
+
     <header>
         <div class="nav-container">
             <div class="logo-area">
@@ -527,6 +590,58 @@
 
         </div>
 
+        <!-- صنف Velvet Cups في الأسفل ككرت مستقل وأكبر حجماً -->
+        <div class="featured-velvet-container">
+            <div class="product-card featured-card" id="prod-velvet">
+                <img src="كاسات.JPEG" alt="Velvet Cups" class="product-img">
+                <div class="product-info" style="padding: 25px;">
+                    <h3 style="font-size: 24px;">Velvet Cups</h3>
+                    <p class="product-desc" style="font-size: 14px;">اختر نوعاً واحداً أو نوعين كحد أقصى (رافيلو كيك، تراميسو، ترافل).</p>
+                    
+                    <div class="options-group" style="margin-bottom: 15px;">
+                        <span class="options-label">اختر الكمية:</span>
+                        <div class="size-selector">
+                            <button type="button" class="option-btn active" id="vc-size-4" onclick="selectVelvetSize('4', 3)">4 كاسات</button>
+                            <button type="button" class="option-btn" id="vc-size-10" onclick="selectVelvetSize('10', 7)">10 كاسات</button>
+                        </div>
+                    </div>
+
+                    <div class="options-group" style="margin-bottom: 15px;">
+                        <span class="options-label">اختر النكهات (نوع أو نوعين كحد أقصى):</span>
+                        <div class="checkbox-group-mini">
+                            <label class="checkbox-label-mini">
+                                <input type="checkbox" class="velvet-choice" value="رافيلو كيك" onchange="checkVelvetLimit(this)">
+                                <span>رافيلو كيك</span>
+                            </label>
+                            <label class="checkbox-label-mini">
+                                <input type="checkbox" class="velvet-choice" value="تراميسو" onchange="checkVelvetLimit(this)">
+                                <span>تراميسو</span>
+                            </label>
+                            <label class="checkbox-label-mini">
+                                <input type="checkbox" class="velvet-choice" value="ترافل" onchange="checkVelvetLimit(this)">
+                                <span>ترافل</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="options-group" style="margin-bottom: 15px; background: var(--beige-light); padding: 12px; border-radius: 6px; border: 1px dashed var(--burgundy);">
+                        <label class="checkbox-label-mini" style="color: var(--burgundy);">
+                            <input type="checkbox" id="vc-logo-check" onchange="toggleVelvetLogoInput()">
+                            <span>إضافة لوجو المناسبة (+0.500 ر.ع)</span>
+                        </label>
+                        <div id="vc-logo-upload-box" style="display: none; margin-top: 8px;">
+                            <input type="file" id="vc-logo-file" accept="image/*" style="font-size: 12px; width: 100%;">
+                        </div>
+                    </div>
+
+                    <div class="price-row">
+                        <span class="product-price" id="vc-total-price" style="font-size: 22px;">3.000 ر.ع</span>
+                        <button type="button" class="add-to-cart-btn" onclick="addVelvetCupsToCart()" style="padding: 12px 25px;">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- بوكس الأصناف الثنائية -->
         <section class="custom-section">
             <h2 style="color: var(--burgundy); margin-bottom: 10px;">بوكس الأصناف الثنائية (الحجم الصغير)</h2>
@@ -640,9 +755,9 @@
                 <input type="tel" id="custPhone" placeholder="رقم الهاتف (واتساب)" required>
                 <select id="deliveryDay" required>
                     <option value="" disabled selected>اختر يوم استلام الطلب</option>
-                    <option value="الأحد">الأحد</option>
-                    <option value="الإثنين">الإثنين</option>
-                    <option value="الثلاثاء">الثلاثاء</option>
+                    <option value="الخميس">الخميس</option>
+                    <option value="الجمعة">الجمعة</option>
+                    <option value="السبت">السبت</option>
                 </select>
             </div>
 
@@ -674,6 +789,25 @@
     </footer>
 
     <script>
+        // دالة التحقق من أيام الويكند (الخميس: 4، الجمعة: 5، السبت: 6)
+        function isWeekend() {
+            const today = new Date().getDay();
+            // 4 = الخميس, 5 = الجمعة, 6 = السبت
+            return (today === 4 || today === 5 || today === 6);
+        }
+
+        // فحص حالة المتجر عند تحميل الصفحة وتعديل الشعار أو تعطيل الأزرار إن لم يكن ويكند
+        window.addEventListener('DOMContentLoaded', () => {
+            const banner = document.getElementById('storeStatusBanner');
+            if (isWeekend()) {
+                banner.style.backgroundColor = '#2e7d32'; // أخضر للدلالة على فتح الطلبات
+                banner.innerHTML = '🟢 متجر VEL مفتوح الآن لاستقبال طلبات الويكند (الخميس، الجمعة، السبت)!';
+            } else {
+                banner.style.backgroundColor = '#c62828'; // أحمر للدلالة على الإغلاق
+                banner.innerHTML = '🔴 عذراً، استقبال الطلبات متاح فقط في الويكند (الخميس، الجمعة، السبت). المتجر مغلق حالياً.';
+            }
+        });
+
         let cart = [];
 
         let state = {
@@ -684,6 +818,11 @@
             pudding: { size: 'صغير', price: 5 }
         };
 
+        let velvetState = {
+            countOption: '4',
+            basePrice: 3.000
+        };
+
         function selectSize(prod, size, price) {
             state[prod].size = size;
             state[prod].price = price;
@@ -692,7 +831,7 @@
             const sizeBtns = card.querySelectorAll('.size-selector .option-btn');
             
             sizeBtns.forEach(btn => {
-                if (btn.innerText === size) {
+                if (btn.innerText.includes(size)) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
@@ -702,115 +841,224 @@
             document.getElementById(`${prod}-price`).textContent = `${price.toFixed(3)} ر.ع`;
         }
 
-        function checkBoxLimit(element) {
-            const checkedBoxes = document.querySelectorAll('.box-choice:checked');
-            if (checkedBoxes.length > 2) {
-                alert('عذراً، الحد الأقصى المسموح به للبوكس الثنائي هو صنفين فقط.');
-                element.checked = false;
-            }
+        function selectVelvetSize(count, price) {
+            velvetState.countOption = count;
+            velvetState.basePrice = price;
+
+            document.getElementById('vc-size-4').classList.toggle('active', count === '4');
+            document.getElementById('vc-size-10').classList.toggle('active', count === '10');
+
+            updateVelvetPrice();
         }
 
-        function addCustomBoxToCart() {
-            const checkedBoxes = document.querySelectorAll('.box-choice:checked');
-            if (checkedBoxes.length !== 2) {
-                alert('فضلاً، يجب عليك تحديد صنفين تماماً لتكوين البوكس.');
-                return;
+        function checkVelvetLimit(element) {
+            const checkedBoxes = document.querySelectorAll('.velvet-choice:checked');
+            if (checkedBoxes.length > 2) {
+                alert('عذراً، يمكنك اختيار نوعين كحد أقصى.');
+                element.checked = false;
             }
-            
-            const items = Array.from(checkedBoxes).map(cb => cb.value).join(' و ');
-            
-            cart.push({
-                name: 'بوكس الأصناف الثنائية',
-                details: `المكونات: ${items} | الحجم: صغير`,
-                price: 10.000,
-                qty: 1
-            });
-            
-            updateCartUI();
-            toggleCart(true);
-            
-            document.querySelectorAll('.box-choice').forEach(cb => cb.checked = false);
+            updateVelvetPrice();
+        }
+
+        function toggleVelvetLogoInput() {
+            const isChecked = document.getElementById('vc-logo-check').checked;
+            document.getElementById('vc-logo-upload-box').style.display = isChecked ? 'block' : 'none';
+            updateVelvetPrice();
+        }
+
+        function updateVelvetPrice() {
+            let total = velvetState.basePrice;
+            const logoChecked = document.getElementById('vc-logo-check').checked;
+            if (logoChecked) {
+                total += 0.500;
+            }
+            document.getElementById('vc-total-price').textContent = `${total.toFixed(3)} ر.ع`;
         }
 
         function checkCateringLimit(element) {
             const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
             if (checkedBoxes.length > 3) {
-                alert('عذراً، الحد الأقصى للاختيار هو 3 أصناف فقط لعربة التقديم.');
+                alert('عذراً، الحد الأقصى المسموح به هو 3 أصناف لعربة المناسبات.');
                 element.checked = false;
             }
             updateCateringPrice();
         }
 
-        function getCateringCalculation() {
-            const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
-            const hasStaff = document.getElementById('cat-staff').checked;
-            
-            let count = checkedBoxes.length;
-            let basePrice = 0;
-            
-            if (count === 3) {
-                basePrice = 90;
-            } else if (count === 2) {
-                basePrice = 60;
-            }
-            
-            let extraStaff = hasStaff ? 15 : 0;
-            return {
-                count: count,
-                basePrice: basePrice,
-                extraStaff: extraStaff,
-                total: basePrice + extraStaff,
-                selectedItems: Array.from(checkedBoxes).map(cb => cb.value)
-            };
-        }
-
         function updateCateringPrice() {
-            const calc = getCateringCalculation();
-            document.getElementById('cat-total-price').textContent = `${calc.total.toFixed(3)} ر.ع`;
+            const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
+            const count = checkedBoxes.length;
+            let base = 0;
+            if (count === 2) base = 60;
+            else if (count === 3) base = 90;
+
+            const staffChecked = document.getElementById('cat-staff').checked;
+            if (staffChecked && count >= 2) {
+                base += 15;
+            }
+            document.getElementById('cat-total-price').textContent = `${base.toFixed(3)} ر.ع`;
         }
 
-        function addToCart(name, key) {
-            let itemPrice = state[key].price;
-            let details = `طبق حجم (${state[key].size})`;
-            
-            let existingItem = cart.find(item => item.name === name && item.details === details);
-            if(existingItem) {
-                existingItem.qty += 1;
-            } else {
-                cart.push({ name: name, details: details, price: itemPrice, qty: 1 });
+        function addToCart(productName, prodKey) {
+            if (!isWeekend()) {
+                alert('عذراً، الطلبات متاحة فقط في الويكند (الخميس، الجمعة، السبت).');
+                return;
             }
+            const item = {
+                name: `${productName} (${state[prodKey].size})`,
+                price: state[prodKey].price,
+                type: 'single'
+            };
+            cart.push(item);
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function addVelvetCupsToCart() {
+            if (!isWeekend()) {
+                alert('عذراً، الطلبات متاحة فقط في الويكند (الخميس، الجمعة، السبت).');
+                return;
+            }
+            const checkedFlavors = document.querySelectorAll('.velvet-choice:checked');
+            if (checkedFlavors.length === 0) {
+                alert('الرجاء اختيار نكهة واحدة على الأقل لكاسات الفيلفت.');
+                return;
+            }
+            let flavorsArr = [];
+            checkedFlavors.forEach(cb => flavorsArr.push(cb.value));
+
+            let price = velvetState.basePrice;
+            let details = `Velvet Cups (${velvetState.countOption} كاسات) - النكهات: ${flavorsArr.join('، ')}`;
             
+            const logoChecked = document.getElementById('vc-logo-check').checked;
+            if (logoChecked) {
+                price += 0.500;
+                details += ' + [مع لوجو المناسبة]';
+            }
+
+            cart.push({
+                name: details,
+                price: price,
+                type: 'velvet'
+            });
+            updateCartUI();
+            toggleCart(true);
+        }
+
+        function addCustomBoxToCart() {
+            if (!isWeekend()) {
+                alert('عذراً، الطلبات متاحة فقط في الويكند (الخميس، الجمعة، السبت).');
+                return;
+            }
+            const checkedBoxes = document.querySelectorAll('.box-choice:checked');
+            if (checkedBoxes.length !== 2) {
+                alert('الرجاء اختيار صنفين بالضبط لعمل بوكس الأصناف الثنائية.');
+                return;
+            }
+            let itemsArr = [];
+            checkedBoxes.forEach(cb => itemsArr.push(cb.value));
+
+            cart.push({
+                name: `بوكس أصناف ثنائية: ${itemsArr.join(' + ')}`,
+                price: 10.000,
+                type: 'box'
+            });
             updateCartUI();
             toggleCart(true);
         }
 
         function addCateringToCart() {
-            const date = document.getElementById('cat-date').value;
-            const calc = getCateringCalculation();
-            
-            if (calc.count !== 2 && calc.count !== 3) {
-                alert('فضلاً، يرجى تحديد (صنفين) أو (3 أصناف) فقط لإتمام حجز العربة بنجاح.');
+            if (!isWeekend()) {
+                alert('عذراً، الطلبات متاحة فقط في الويكند (الخميس، الجمعة، السبت).');
                 return;
             }
-            
-            const staffText = document.getElementById('cat-staff').checked ? "مع عاملة ضيافة (+15 ر.ع)" : "بدون عاملة";
-            const itemsListText = calc.selectedItems.join(' و ');
-            
-            cart.push({ 
-                name: 'حجز عربة مناسبات', 
-                details: `التاريخ: ${date} | الأصناف المحددة: ${calc.count} أصناف (${itemsListText}) | ${staffText}`, 
-                price: calc.total, 
-                qty: 1 
+            const dateVal = document.getElementById('cat-date').value;
+            if (!dateVal) {
+                alert('الرجاء تحديد تاريخ الحفل.');
+                return;
+            }
+            const checkedBoxes = document.querySelectorAll('.sweet-choice:checked');
+            if (checkedBoxes.length < 2) {
+                alert('الرجاء اختيار صنفين أو 3 أصناف لعربة الحفلات.');
+                return;
+            }
+
+            let sweetsArr = [];
+            checkedBoxes.forEach(cb => sweetsArr.push(cb.value));
+
+            let price = (checkedBoxes.length === 3) ? 90 : 60;
+            let details = `حجز عربة حفلات (التاريخ: ${dateVal}) - الأصناف: ${sweetsArr.join('، ')}`;
+
+            const staffChecked = document.getElementById('cat-staff').checked;
+            if (staffChecked) {
+                price += 15;
+                details += ' + [مع عاملة ضيافة]';
+            }
+
+            cart.push({
+                name: details,
+                price: price,
+                type: 'catering'
             });
-            
             updateCartUI();
             toggleCart(true);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const listEl = document.getElementById('cartItemsList');
+            const countEl = document.getElementById('cartCount');
+            const totalSumEl = document.getElementById('cartTotalSum');
+
+            countEl.textContent = cart.length;
+
+            if (cart.length === 0) {
+                listEl.innerHTML = '<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>';
+                totalSumEl.textContent = '0.000 ر.ع';
+                return;
+            }
+
+            let html = '';
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                subtotal += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: bold; font-size: 14px; color: var(--burgundy);">${item.name}</div>
+                            <div style="font-size: 13px; color: #555; margin-top: 4px;">${item.price.toFixed(3)} ر.ع</div>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#d00; cursor:pointer; font-size:16px;">&times;</button>
+                    </div>
+                `;
+            });
+
+            // حساب الشمعة إذا تم تفعيلها
+            const candleChecked = document.getElementById('globalCandleCheck').checked;
+            if (candleChecked) {
+                subtotal += 0.200;
+                html += `
+                    <div class="cart-item" style="border-style: dashed;">
+                        <div>
+                            <div style="font-weight: bold; font-size: 14px; color: var(--burgundy);">إضافة شمعة للطلب 🕯️</div>
+                            <div style="font-size: 13px; color: #555; margin-top: 4px;">0.200 ر.ع</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            listEl.innerHTML = html;
+            totalSumEl.textContent = `${subtotal.toFixed(3)} ر.ع`;
         }
 
         function toggleCart(open) {
             const drawer = document.getElementById('cartDrawer');
             const overlay = document.getElementById('cartOverlay');
-            if(open) {
+            if (open) {
                 drawer.classList.add('open');
                 overlay.classList.add('show');
             } else {
@@ -819,104 +1067,51 @@
             }
         }
 
-        function updateCartUI() {
-            const itemsList = document.getElementById('cartItemsList');
-            const cartCount = document.getElementById('cartCount');
-            const cartTotalSum = document.getElementById('cartTotalSum');
-            
-            let totalCount = 0;
-            let subtotal = 0;
-            
-            if(cart.length === 0) {
-                itemsList.innerHTML = '<p style="text-align: center; color: #888; margin-top: 30px;">سلة التسوق فارغة</p>';
-                cartCount.textContent = '0';
-                cartTotalSum.textContent = '0.000 ر.ع';
+        function processCheckout() {
+            if (!isWeekend()) {
+                alert('عذراً، الطلبات متاحة فقط في الويكند (الخميس، الجمعة، السبت).');
                 return;
             }
-            
-            itemsList.innerHTML = '';
-            cart.forEach((item, index) => {
-                totalCount += item.qty;
-                let itemTotal = item.price * item.qty;
-                subtotal += itemTotal;
-                
-                itemsList.innerHTML += `
-                    <div class="cart-item">
-                        <div>
-                            <h4 style="font-size: 15px; color: var(--burgundy);">${item.name}</h4>
-                            <p style="font-size: 12px; color: #666; margin: 3px 0;">${item.details}</p>
-                            <p style="font-size: 13px; font-weight: bold;">${item.price.toFixed(3)} ر.ع × ${item.qty}</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <button onclick="changeQty(${index}, 1)" style="padding: 2px 8px; background: var(--beige-dark); border:none; cursor:pointer; font-weight:bold;">+</button>
-                            <span>${item.qty}</span>
-                            <button onclick="changeQty(${index}, -1)" style="padding: 2px 8px; background: var(--beige-dark); border:none; cursor:pointer; font-weight:bold;">-</button>
-                            <button onclick="removeItem(${index})" style="background:none; border:none; color:#d00; cursor:pointer; font-size:16px; margin-right:5px;">&times;</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // إضافة سعر الشمعة إن كانت مفعلة
-            const candleChecked = document.getElementById('globalCandleCheck').checked;
-            if(candleChecked) {
-                subtotal += 0.200;
+            if (cart.length === 0) {
+                alert('السلة فارغة.');
+                return;
             }
-            
-            cartCount.textContent = totalCount;
-            cartTotalSum.textContent = `${subtotal.toFixed(3)} ر.ع`;
-        }
 
-        function changeQty(index, change) {
-            cart[index].qty += change;
-            if(cart[index].qty <= 0) {
-                cart.splice(index, 1);
-            }
-            updateCartUI();
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function processCheckout() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
             const day = document.getElementById('deliveryDay').value;
-            const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
-            
-            if(!name || !phone || !day) {
-                alert('فضلاً، أكمل بيانات العميل واسترطادات التوصيل قبل تأكيد الطلب.');
+
+            if (!name || !phone || !day) {
+                alert('الرجاء إدخال اسم العميل، رقم الهاتف، واختيار يوم الاستلام.');
                 return;
             }
-            
-            if(cart.length === 0) {
-                alert('سلة التسوق فارغة.');
-                return;
-            }
-            
-            let message = `*طلب جديد من متجر VEL الفاخر* 🍰\n\n`;
-            message += `👤 *اسم العميل:* ${name}\n`;
-            message += `📞 *رقم الهاتف:* ${phone}\n`;
-            message += `📅 *يوم الاستلام:* ${day}\n`;
-            message += `💳 *طريقة الدفع:* ${payMethod}\n\n`;
-            message += `🛒 *تفاصيل الطلب:*\n`;
-            
-            cart.forEach((item, idx) => {
-                message += `${idx + 1}. ${item.name} (${item.details}) - الكمية: ${item.qty} - السعر: ${(item.price * item.qty).toFixed(3)} ر.ع\n`;
-            });
-            
+
+            let totalSum = 0;
+            cart.forEach(item => totalSum += item.price);
             const candleChecked = document.getElementById('globalCandleCheck').checked;
-            if(candleChecked) {
-                message += `🕯️ إضافة شمعة للطلب (+0.200 ر.ع)\n`;
+            if (candleChecked) totalSum += 0.200;
+
+            const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+
+            let message = `مرحباً، أرغب في تأكيد طلب جديد من متجر VEL:%0A%0A`;
+            message += `👤 اسم العميل: ${name}%0A`;
+            message += `📞 الهاتف: ${phone}%0A`;
+            message += `📅 يوم الاستلام: ${day}%0A`;
+            message += `💳 طريقة الدفع: ${payMethod}%0A%0A`;
+            message += `🛒 الأصناف المطلوبة:%0A`;
+
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name} - ${item.price.toFixed(3)} ر.ع%0A`;
+            });
+
+            if (candleChecked) {
+                message += `- إضافة شمعة للطلب 🕯️ - 0.200 ر.ع%0A`;
             }
-            
-            message += `\n💰 *المجموع الكلي:* ${document.getElementById('cartTotalSum').textContent}`;
-            
-            const encodedMessage = encodeURIComponent(message);
-            // رقم الواتساب الافتراضي للتجربة أو يمكن تعديله حسب رقم المتجر
-            const whatsappUrl = `https://wa.me/96800000000?text=${encodedMessage}`;
+
+            message += `%0A💰 المجموع الكلي: ${totalSum.toFixed(3)} ر.ع`;
+
+            // توجيه العميل للواتساب (تأكد من استبدال الرقم برقم المتجر الخاص بك)
+            const whatsappUrl = `https://wa.me/96800000000?text=${message}`;
             window.open(whatsappUrl, '_blank');
         }
     </script>
